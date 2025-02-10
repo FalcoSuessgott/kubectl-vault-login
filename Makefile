@@ -23,15 +23,18 @@ lint: ## lint go files
 	golangci-lint run -c .golang-ci.yml
 
 .PHONY: kind
-kind:
-	kind create cluster --config=kind-config.yml
+kind: ## start local kind cluster with vault SA configured
+	kind create cluster --config=scripts/kind-config.yml
+	kubectl apply -f scripts/vault-auth.yml
 
 .PHONY: vault
-vault:
+vault:	## start local vault server with k8s secret engine configured
 	vault server \
-    	-dev \
-    	-dev-listen-address=0.0.0.0:8200 \
-    	-dev-root-token-id=root &
+		-dev \
+		-dev-listen-address=0.0.0.0:8200 \
+		-dev-root-token-id=root &
+
+	./scripts/setup-vault-k8s-secret.sh
 
 .PHONY: teardown
 teardown:

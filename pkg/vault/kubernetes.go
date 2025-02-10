@@ -9,7 +9,14 @@ import (
 // nolint: gosec
 const kubernetesCredsAPIPath = "%s/creds/%s"
 
-func (v *Vault) GetKubernetesCredentials(ctx context.Context) (string, error) {
+type Credentials struct {
+	ServiceAccountToken     string `json:"service_account_token"`
+	ServiceAccountName      string `json:"service_account_name"`
+	ServiceAccountNamespace string `json:"service_account_namespace"`
+	TTL                     int    `json:"ttl"`
+}
+
+func (v *Vault) GetKubernetesCredentials(ctx context.Context) (*Credentials, error) {
 	path := fmt.Sprintf(kubernetesCredsAPIPath, v.kubernetesSecretsMount, v.kubernetesSecretsRole)
 
 	opts := make(map[string]interface{})
@@ -32,17 +39,32 @@ func (v *Vault) GetKubernetesCredentials(ctx context.Context) (string, error) {
 
 	resp, err := v.Logical().WriteWithContext(ctx, path, opts)
 	if err != nil {
-		return "", fmt.Errorf("failed to get kubernetes credentials: %w", err)
+		return nil, fmt.Errorf("failed to get kubernetes credentials: %w", err)
 	}
 
 	if resp.Data == nil {
-		return "", errors.New("no data in response")
+		return nil, errors.New("no data in response")
 	}
 
-	token, ok := resp.Data["service_account_token"].(string)
+	saToken, ok := resp.Data["service_account_token"].(string)
 	if !ok {
-		return "", errors.New("no service_account_token in response")
+		return nil, errors.New("no service_account_token in response")
 	}
 
-	return token, nil
+	saName, ok := resp.Data["service_account_name"].(string)
+	if !ok {
+		return nil, errors.New("no service_account_name in response")
+	}
+
+	saNamespace, ok := resp.Data["service_account_namespace"].(string)
+	if !ok {
+		return nil, errors.New("no service_account_namespace in response")
+	}
+
+	return &Credentials{
+		TTL:                     resp.LeaseDuration,
+		ServiceAccountName:      saName,
+		ServiceAccountNamespace: saNamespace,
+		ServiceAccountToken:     saToken,
+	}, nil
 }

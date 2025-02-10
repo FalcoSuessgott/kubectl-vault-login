@@ -10,3 +10,12 @@ Prerequisites:
 - vault
 - kubectl
 - jq
+
+# TODO
+- add guides for each mode
+- add a guide for cluster-admin and read-only
+- track the SA tokens in $DIR/.kubectl-vault-login-log.json
+- test deletion
+- fix expirationtimestamp
+- check execfredentials apiversions
+-

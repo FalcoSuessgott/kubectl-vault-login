@@ -4,8 +4,10 @@ go 1.23.3
 
 require (
 	github.com/caarlos0/env/v11 v11.3.1
+	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/hashicorp/vault/api v1.15.0
 	github.com/spf13/cobra v1.8.1
+	golang.org/x/sys v0.28.0
 	k8s.io/apimachinery v0.32.1
 	k8s.io/client-go v0.32.1
 )

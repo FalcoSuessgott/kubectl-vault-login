@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"github.com/FalcoSuessgott/kubectl-vault-login/pkg/exec_credential"
+	fileLog "github.com/FalcoSuessgott/kubectl-vault-login/pkg/log"
 	vault "github.com/FalcoSuessgott/kubectl-vault-login/pkg/vault"
 	"github.com/caarlos0/env/v11"
 	"github.com/spf13/cobra"
@@ -47,6 +48,7 @@ func NewRootCmd() *cobra.Command {
 				return nil
 			}
 
+			// auth
 			v, err := vault.NewDefaultClient(
 				vault.WithKubernetesSecretsMount(o.KubernetesSecretsMount),
 				vault.WithKubernetesSecretsRole(o.KubernetesSecretsRole),
@@ -59,12 +61,23 @@ func NewRootCmd() *cobra.Command {
 				return fmt.Errorf("failed to create vault client: %w", err)
 			}
 
-			token, err := v.GetKubernetesCredentials(ctx)
+			// fetch creds
+			credentials, err := v.GetKubernetesCredentials(ctx)
 			if err != nil {
 				return fmt.Errorf("failed to get kubernetes credentials: %w", err)
 			}
 
-			execCreds, err := kubeconfig.NewExecCredential(token)
+			fLog, err := fileLog.New()
+			if err != nil {
+				return fmt.Errorf("cannot find file log: %w", err)
+			}
+
+			fmt.Println(fLog.Read())
+
+			// append to log
+			fLog.Write()
+			// write exec credentials
+			execCreds, err := kubeconfig.NewExecCredential(credentials.ServiceAccountToken)
 			if err != nil {
 				return fmt.Errorf("failed to create exec credential: %w", err)
 			}
