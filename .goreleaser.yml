@@ -1,0 +1,128 @@
+version: 2
+
+builds:
+  -
+    env:
+      - CGO_ENABLED=0
+    binary: kubectl-vault-login
+    flags:
+      - -trimpath
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    goarm:
+      - "7"
+    ignore:
+      - goos: windows
+        goarch: arm
+
+archives:
+  -
+    builds:
+      - kubectl-vault-login
+    format_overrides:
+      - goos: windows
+        format: zip
+    name_template: >-
+      {{- .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end -}}
+
+dockers:
+  - image_templates:
+      - "ghcr.io/falcosuessgott/{{.ProjectName}}:{{ .Tag }}-amd64"
+      - "falcosuessgott/{{.ProjectName}}:{{ .Tag }}-amd64"
+    dockerfile: Dockerfile.goreleaser
+    use: buildx
+    build_flag_templates:
+      - "--pull"
+      - "--label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/FalcoSuessgott/vault-kubernetes-kms/main/README.md"
+      - "--label=io.artifacthub.package.maintainers=[{\"name\":\"Tom Morelly\",\"email\":\"tommorelly@gmail.com\"}]"
+      - "--label=io.artifacthub.package.license=MIT"
+      - "--label=org.opencontainers.image.description=Encrypt Kubernetes Secrets using Hashicorp Vault as the KMS Provider"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.name={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source={{.GitURL}}"
+      - "--platform=linux/amd64"
+    extra_files:
+      - go.mod
+      - go.sum
+  - image_templates:
+      - "ghcr.io/falcosuessgott/{{.ProjectName}}:{{ .Tag }}-arm64"
+      - "falcosuessgott/{{.ProjectName}}:{{ .Tag }}-arm64"
+    dockerfile: Dockerfile.goreleaser
+    use: buildx
+    build_flag_templates:
+      - "--pull"
+      - "--label=io.artifacthub.package.readme-url=https://raw.githubusercontent.com/FalcoSuessgott/vault-kubernetes-kms/main/README.md"
+      - "--label=io.artifacthub.package.maintainers=[{\"name\":\"Tom Morelly\",\"email\":\"tommorelly@gmail.com\"}]"
+      - "--label=io.artifacthub.package.license=MIT"
+      - "--label=org.opencontainers.image.description=Encrypt Kubernetes Secrets using Hashicorp Vault as the KMS Provider"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.name={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source={{.GitURL}}"
+      - "--platform=linux/arm64"
+    extra_files:
+      - go.mod
+      - go.sum
+    goarch: arm64
+
+docker_manifests:
+- name_template: "ghcr.io/falcosuessgott/{{.ProjectName}}:{{ .Tag }}"
+  image_templates:
+    - "ghcr.io/falcosuessgott/{{.ProjectName}}:{{ .Tag }}-amd64"
+    - "ghcr.io/falcosuessgott/{{.ProjectName}}:{{ .Tag }}-arm64"
+- name_template: "ghcr.io/falcosuessgott/{{.ProjectName}}:latest"
+  image_templates:
+    - "ghcr.io/falcosuessgott/{{.ProjectName}}:{{ .Tag }}-amd64"
+    - "ghcr.io/falcosuessgott/{{.ProjectName}}:{{ .Tag }}-arm64"
+- name_template: "falcosuessgott/{{.ProjectName}}:{{ .Tag }}"
+  image_templates:
+    - "falcosuessgott/{{.ProjectName}}:{{ .Tag }}-amd64"
+    - "falcosuessgott/{{.ProjectName}}:{{ .Tag }}-arm64"
+- name_template: "falcosuessgott/{{.ProjectName}}:latest"
+  image_templates:
+    - "falcosuessgott/{{.ProjectName}}:{{ .Tag }}-amd64"
+    - "falcosuessgott/{{.ProjectName}}:{{ .Tag }}-arm64"
+
+
+checksum:
+  name_template: "checksums.txt"
+
+changelog:
+  sort: asc
+  use: github
+  filters:
+    exclude:
+    - "^test:"
+    - "^chore"
+    - "merge conflict"
+    - Merge pull request
+    - Merge remote-tracking branch
+    - Merge branch
+    - go mod tidy
+  groups:
+    - title: Dependency updates
+      regexp: '^.*?(feat|fix)\(deps\)!?:.+$'
+      order: 300
+    - title: 'New Features'
+      regexp: '^.*?feat(\([[:word:]]+\))??!?:.+$'
+      order: 100
+    - title: 'Bug fixes'
+      regexp: '^.*?fix(\([[:word:]]+\))??!?:.+$'
+      order: 200
+    - title: 'Documentation updates'
+      regexp: ^.*?doc(\([[:word:]]+\))??!?:.+$
+      order: 400
+    - title: Other work
+      order: 9999

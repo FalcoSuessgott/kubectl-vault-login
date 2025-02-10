@@ -1,0 +1,34 @@
+name: E2E Testing
+
+on:
+  push:
+
+jobs:
+  create-sa-token:
+    runs-on: ubuntu-latest
+
+    services:
+      vault:
+        image: hashicorp/vault:1.18.3
+        ports:
+          - 8200:8200
+        env:
+          VAULT_DEV_ROOT_TOKEN_ID: root
+        credentials:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+        options: >-
+          --add-host host.docker.internal:host-gateway
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: helm/kind-action@v1
+        with:
+          cluster_name: vault-k8s-secret
+          config: kind-config.yml
+
+      - name: deploy
+        run: |
+          set -ex
+          make part-00

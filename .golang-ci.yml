@@ -1,0 +1,24 @@
+linters-settings:
+  lll:
+    line-length: 180
+linters:
+  enable-all: true
+  disable:
+    - testpackage
+    - forbidigo
+    - paralleltest
+    - varnamelen
+    - rowserrcheck
+    - sqlclosecheck
+    - wastedassign
+    - exhaustruct
+    - nolintlint
+    - wrapcheck
+    - depguard
+    - gomnd
+    - err113
+    - intrange
+    - copyloopvar
+    - gochecknoglobals
+    - revive
+    - execinquery
