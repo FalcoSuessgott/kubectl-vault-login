@@ -1,0 +1,67 @@
+site_name: kubectl-vault-login
+site_description: A kubectl plugin to authenticate to a Kubernetes Cluster using HashiCorp Vaults Kubernetes Secret Engine
+site_author: FalcoSuessgott
+
+repo_name: FalcoSuessgott/kubectl-vault-login
+repo_url: https://github.com/FalcoSuessgott/kubectl-vault-login
+
+docs_dir: docs/
+
+plugins:
+  - search
+  - git-authors
+  - git-revision-date-localized:
+      locale: en
+      enable_creation_date: false
+
+markdown_extensions:
+  - admonition
+  - def_list
+  - footnotes
+  - attr_list
+  - md_in_html
+  - tables
+  - footnotes
+  - toc:
+      permalink: true
+  - markdown_include.include:
+        base_path: docs
+
+nav:
+  - kubectl-vault-login:
+    - index.md
+    - guides:
+      - guide/01-create-sa-token.md
+theme:
+  icon:
+    edit: material/pencil
+    view: material/eye
+    repo: fontawesome/brands/github
+  name: material
+
+  language: en
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      primary: blue
+      accent: indigo
+      toggle:
+        icon: material/eye
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: blue
+      accent: indigo
+      toggle:
+        icon: material/eye-outline
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.indexes
+    - content.code.copy
+    - content.action.edit
+    - navigation.top
+    - navigation.expand
+    - navigation.footer

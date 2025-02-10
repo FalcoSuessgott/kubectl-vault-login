@@ -1,0 +1,66 @@
+name: E2E Testing
+
+on:
+  push:
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+
+    services:
+      vault:
+        image: hashicorp/vault:1.18.3
+        ports:
+          - 8200:8200
+        env:
+          VAULT_DEV_ROOT_TOKEN_ID: root
+        # credentials:
+        #   username: ${{ secrets.DOCKER_USERNAME }}
+        #   password: ${{ secrets.DOCKER_TOKEN }}
+        options: >-
+          --add-host host.docker.internal:host-gateway
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: eLco/setup-vault@v1
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.3'
+          cache: false
+
+      - name: Build plugin
+        run: go build -o kubectl-vault-login
+
+      - uses: helm/kind-action@v1
+        with:
+          cluster_name: vault-k8s-secret
+          config: scripts/kind-config.yml
+
+      - name: create a SA and token that is used by vault for creating new service account tokens
+        run: kubectl apply -f scripts/vault-auth.yml
+
+      - name: create a SA and role binding that is allowed to list pods in the default NS
+        run: kubectl apply -f scripts/tmp-sa.yml
+
+      - name: Configure Vault k8s secret engine
+        run: |
+          K8S_JWT_TOKEN=$(kubectl get secret vault-auth-token -o jsonpath="{.data.token}" | base64 -d)
+          K8S_CA_CERT=$(kubectl get secret vault-auth-token -o jsonpath="{['data']['ca\.crt']}" | base64 -d)
+          vault secrets enable kubernetes
+          vault write -f kubernetes/config \
+              kubernetes_host="https://host.docker.internal:6443" \
+              kubernetes_ca_cert="$K8S_CA_CERT" \
+              service_account_jwt="$K8S_JWT_TOKEN"
+          vault write kubernetes/roles/test \
+              allowed_kubernetes_namespaces="default" \
+              service_account_name="tmp-sa" \
+              token_default_ttl="10m"
+        env:
+          VAULT_ADDR: http://127.0.0.1:8200
+          VAULT_TOKEN: root
+
+      - name: Generate credentials
+        run: ./kubectl-vault-login -r test
+        env:
+          VAULT_ADDR: http://127.0.0.1:8200
+          VAULT_TOKEN: root

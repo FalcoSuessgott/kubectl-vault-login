@@ -1,0 +1,15 @@
+{
+  "rules": [
+    {
+      "apiGroups": [
+        ""
+      ],
+      "resources": [
+        "pods"
+      ],
+      "verbs": [
+        "list"
+      ]
+    }
+  ]
+}
