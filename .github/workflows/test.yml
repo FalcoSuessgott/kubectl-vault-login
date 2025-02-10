@@ -1,0 +1,30 @@
+name: Test and coverage
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.6'
+          cache: false
+
+      - run: go generate -tags tools tools/tools.go
+
+      - name: go get
+        run: go get ./...
+
+      - name: Run coverage
+        run: make test
+        env:
+          # https://github.com/testcontainers/testcontainers-go/issues/1782
+          TESTCONTAINERS_RYUK_DISABLED: true
