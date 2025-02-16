@@ -598,7 +598,7 @@
 
 <h1 id="kubectl-vault-login">kubectl-vault-login<a class="headerlink" href="#kubectl-vault-login" title="Permanent link">&para;</a></h1>
 <p>Ever needed short-lived and fine-grained <code>kubectl</code> access to <code>Kubernetes</code>-Cluster for some operations during CI/CD?</p>
-<p>Well, <code>kubectl-vault-login</code> allws you to do exactly this!</p>
+<p>Well, <code>kubectl-vault-login</code> allows you to do exactly this!</p>
 <p>By leveraging <a href="https://developer.hashicorp.com/vault/docs/secrets/kubernetes">HashiCorp Vaults Kubernetes Secrets Engine</a> you can create <code>Service Accounts</code> and <code>Service Account tokens</code> with a <strong>tight RBAC</strong> and a <strong>low TTL</strong> - making it incredibly useful for CI/CD Operations, such as <code>kubectl apply</code> commands.</p>
 <h2 id="how-does-it-work">How does it work<a class="headerlink" href="#how-does-it-work" title="Permanent link">&para;</a></h2>
 <p>The <a href="https://developer.hashicorp.com/vault/docs/secrets/kubernetes">HashiCorp Vaults Kubernetes Secrets Engine</a> can operate in 3 modes:</p>
@@ -614,10 +614,23 @@
 <li>Install the plugin</li>
 <li>Configure Kubernetes to allow <code>Vault</code> creating the resources</li>
 <li>Configure <a href="https://developer.hashicorp.com/vault/docs/secrets/kubernetes">HashiCorp Vaults Kubernetes Secrets Engine</a></li>
-<li>Patch your <code>kubeconfig</code> to use an <code>ExeConfig</code></li>
+<li>Patch your <code>kubeconfig</code> to use an <code>ExeConfig</code>:</li>
+</ol>
+<pre><code class="language-yaml"># $KUBECONFIG
+[...]
+users:
+- name: kind-kind
+  user:
+    exec:
+      apiVersion: client.authentication.k8s.io/v1beta1
+      command: kubectl-vault-login
+      args:
+        - --role=kind
+</code></pre>
+<ol>
 <li>Run any <code>kubectl</code> plugin that is allowed in your RBAC-setup</li>
 </ol>
-<p>Checkout the <a href="mode-01/">Guides</a></p>
+<p><strong>Checkout the <a href="mode-01/">Guides</a></strong></p>
 
 
 
