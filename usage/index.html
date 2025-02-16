@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A kubectl plugin to authenticate to a Kubernetes Cluster using HashiCorp Vaults Kubernetes Secret Engine">
+        <meta name="description" content="A kubectl plugin for authenticating to Kubernetes using HashiCorp Vaults Kubernetes Secret Engine">
       
       
         <meta name="author" content="FalcoSuessgott">
@@ -587,21 +587,21 @@
 <p class="admonition-title">Tip</p>
 <p>All of Vaults <a href="https://developer.hashicorp.com/vault/docs/commands">Environment Variables</a> are supported.</p>
 </div>
-<pre><code class="language-bash">&gt; kubectl-vault-login -h
-A kubectl plugin to to obtain access to a kubernetes cluster via HashiCorp Vaults Kubernetes secrets engine
-
-Usage:
-  kubectl-vault-login [flags]
-
-Flags:
-  -a, --audiences string   A comma separated string containing the intended audiences of the generated Kubernetes service account (VAULT_K8S_LOGIN_AUDIENCES)
-  -c, --crb                If true, generate a ClusterRoleBinding to grant permissions across the whole cluster instead of within a namespace (VAULT_K8S_LOGIN_CRB)
-  -h, --help               help for kubectl-vault-login
-  -m, --mount string       The Kubernetes secrets mount path (VAULT_K8S_LOGIN_MOUNT) (default &quot;kubernetes&quot;)
-  -n, --ns string          The name of the Kubernetes namespace in which to generate the credentials (VAULT_K8S_LOGIN_NAMESPACE)
-  -r, --role string        The name of the role to generate credentials for (VAULT_K8S_LOGIN_ROLE)
-  -t, --ttl string         The ttl of the generated Kubernetes service account (VAULT_K8S_LOGIN_TTL) (default &quot;1h&quot;)
-</code></pre>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>&gt;<span class="w"> </span>kubectl-vault-login<span class="w"> </span>-h
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>A<span class="w"> </span>kubectl<span class="w"> </span>plugin<span class="w"> </span>to<span class="w"> </span>to<span class="w"> </span>obtain<span class="w"> </span>access<span class="w"> </span>to<span class="w"> </span>a<span class="w"> </span>kubernetes<span class="w"> </span>cluster<span class="w"> </span>via<span class="w"> </span>HashiCorp<span class="w"> </span>Vaults<span class="w"> </span>Kubernetes<span class="w"> </span>secrets<span class="w"> </span>engine
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>Usage:
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span>kubectl-vault-login<span class="w"> </span><span class="o">[</span>flags<span class="o">]</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>Flags:
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span>-a,<span class="w"> </span>--audiences<span class="w"> </span>string<span class="w">   </span>A<span class="w"> </span>comma<span class="w"> </span>separated<span class="w"> </span>string<span class="w"> </span>containing<span class="w"> </span>the<span class="w"> </span>intended<span class="w"> </span>audiences<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>generated<span class="w"> </span>Kubernetes<span class="w"> </span>service<span class="w"> </span>account<span class="w"> </span><span class="o">(</span>VAULT_K8S_LOGIN_AUDIENCES<span class="o">)</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span>-c,<span class="w"> </span>--crb<span class="w">                </span>If<span class="w"> </span>true,<span class="w"> </span>generate<span class="w"> </span>a<span class="w"> </span>ClusterRoleBinding<span class="w"> </span>to<span class="w"> </span>grant<span class="w"> </span>permissions<span class="w"> </span>across<span class="w"> </span>the<span class="w"> </span>whole<span class="w"> </span>cluster<span class="w"> </span>instead<span class="w"> </span>of<span class="w"> </span>within<span class="w"> </span>a<span class="w"> </span>namespace<span class="w"> </span><span class="o">(</span>VAULT_K8S_LOGIN_CRB<span class="o">)</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span>-h,<span class="w"> </span>--help<span class="w">               </span><span class="nb">help</span><span class="w"> </span><span class="k">for</span><span class="w"> </span>kubectl-vault-login
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span>-m,<span class="w"> </span>--mount<span class="w"> </span>string<span class="w">       </span>The<span class="w"> </span>Kubernetes<span class="w"> </span>secrets<span class="w"> </span>mount<span class="w"> </span>path<span class="w"> </span><span class="o">(</span>VAULT_K8S_LOGIN_MOUNT<span class="o">)</span><span class="w"> </span><span class="o">(</span>default<span class="w"> </span><span class="s2">&quot;kubernetes&quot;</span><span class="o">)</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">  </span>-n,<span class="w"> </span>--ns<span class="w"> </span>string<span class="w">          </span>The<span class="w"> </span>name<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>Kubernetes<span class="w"> </span>namespace<span class="w"> </span><span class="k">in</span><span class="w"> </span>which<span class="w"> </span>to<span class="w"> </span>generate<span class="w"> </span>the<span class="w"> </span>credentials<span class="w"> </span><span class="o">(</span>VAULT_K8S_LOGIN_NAMESPACE<span class="o">)</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">  </span>-r,<span class="w"> </span>--role<span class="w"> </span>string<span class="w">        </span>The<span class="w"> </span>name<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>role<span class="w"> </span>to<span class="w"> </span>generate<span class="w"> </span>credentials<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="o">(</span>VAULT_K8S_LOGIN_ROLE<span class="o">)</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">  </span>-t,<span class="w"> </span>--ttl<span class="w"> </span>string<span class="w">         </span>The<span class="w"> </span>ttl<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>generated<span class="w"> </span>Kubernetes<span class="w"> </span>service<span class="w"> </span>account<span class="w"> </span><span class="o">(</span>VAULT_K8S_LOGIN_TTL<span class="o">)</span><span class="w"> </span><span class="o">(</span>default<span class="w"> </span><span class="s2">&quot;1h&quot;</span><span class="o">)</span>
+</span></code></pre></div>
 
 
 

@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A kubectl plugin to authenticate to a Kubernetes Cluster using HashiCorp Vaults Kubernetes Secret Engine">
+        <meta name="description" content="A kubectl plugin for authenticating to Kubernetes using HashiCorp Vaults Kubernetes Secret Engine">
       
       
         <meta name="author" content="FalcoSuessgott">
@@ -717,20 +717,20 @@
 <h2 id="krew"><a href="https://krew.sigs.k8s.io"><code>krew</code></a><a class="headerlink" href="#krew" title="Permanent link">&para;</a></h2>
 <p>tbd.</p>
 <h2 id="brew"><code>brew</code><a class="headerlink" href="#brew" title="Permanent link">&para;</a></h2>
-<pre><code>brew install falcosuessgott/tap/kubectl-vault-login`
-</code></pre>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>brew install falcosuessgott/tap/kubectl-vault-login`
+</span></code></pre></div>
 <h2 id="curl"><code>curl</code><a class="headerlink" href="#curl" title="Permanent link">&para;</a></h2>
-<pre><code>version=$(curl https://api.github.com/repos/falcosuessgott/kubectl-vault-login/releases/latest -s | jq .name -r)
-curl -OL &quot;https://github.com/FalcoSuessgott/kubectl-vault-login/releases/download/${version}/vkv_$(uname)_$(uname -m).tar.gz&quot;
-tar xzf kubectl-vault-login_$(uname)_$(uname -m).tar.gz
-chmod u+x kubectl-vault-login
-./kubectl-vault-login version
-</code></pre>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>version=$(curl https://api.github.com/repos/falcosuessgott/kubectl-vault-login/releases/latest -s | jq .name -r)
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>curl -OL &quot;https://github.com/FalcoSuessgott/kubectl-vault-login/releases/download/${version}/vkv_$(uname)_$(uname -m).tar.gz&quot;
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>tar xzf kubectl-vault-login_$(uname)_$(uname -m).tar.gz
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>chmod u+x kubectl-vault-login
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>./kubectl-vault-login version
+</span></code></pre></div>
 <h2 id="go"><code>go</code><a class="headerlink" href="#go" title="Permanent link">&para;</a></h2>
-<pre><code>git clone https://github.com/FalcoSuessgott/kubectl-vault-login.git
-cd kubectl-vault-login
-go build
-</code></pre>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>git clone https://github.com/FalcoSuessgott/kubectl-vault-login.git
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>cd kubectl-vault-login
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>go build
+</span></code></pre></div>
 
 
 

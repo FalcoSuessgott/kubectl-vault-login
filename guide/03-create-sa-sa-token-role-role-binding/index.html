@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A kubectl plugin to authenticate to a Kubernetes Cluster using HashiCorp Vaults Kubernetes Secret Engine">
+        <meta name="description" content="A kubectl plugin for authenticating to Kubernetes using HashiCorp Vaults Kubernetes Secret Engine">
       
       
         <meta name="author" content="FalcoSuessgott">
@@ -579,93 +579,93 @@
 
 <h1 id="01-generate-a-service-account-and-a-token-and-bind-a-pre-existing-kubernetes-role">01: Generate a service account and a token, and bind a pre-existing Kubernetes role<a class="headerlink" href="#01-generate-a-service-account-and-a-token-and-bind-a-pre-existing-kubernetes-role" title="Permanent link">&para;</a></h1>
 <h2 id="kind">kind<a class="headerlink" href="#kind" title="Permanent link">&para;</a></h2>
-<pre><code class="language-bash">kind create cluster --config=kind-config.yml
-</code></pre>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>kind<span class="w"> </span>create<span class="w"> </span>cluster<span class="w"> </span>--config<span class="o">=</span>kind-config.yml
+</span></code></pre></div>
 <h1 id="sa-token-vault-auth-token-ued-by-vault-that-is-allowed-to-create-service-account-tokens">SA token (vault-auth) + token ued by vault that is allowed to create service account tokens<a class="headerlink" href="#sa-token-vault-auth-token-ued-by-vault-that-is-allowed-to-create-service-account-tokens" title="Permanent link">&para;</a></h1>
-<pre><code class="language-bash">kubectl apply -f vault-auth.yml
-</code></pre>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>vault-auth.yml
+</span></code></pre></div>
 <h2 id="vault">Vault<a class="headerlink" href="#vault" title="Permanent link">&para;</a></h2>
-<pre><code class="language-bash">vault server \
-    -dev \
-    -dev-listen-address=0.0.0.0:8200 \
-    -dev-root-token-id=root
-</code></pre>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>vault<span class="w"> </span>server<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span>-dev<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span>-dev-listen-address<span class="o">=</span><span class="m">0</span>.0.0.0:8200<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span>-dev-root-token-id<span class="o">=</span>root
+</span></code></pre></div>
 <p><strong>Kubernetes prevents users (including service accounts) from granting RBAC permissions they do not already have themselves</strong>
 <strong>The "escalate" verb allows a user to grant roles with more privileges than they themselves have.</strong>
 <strong>The "bind" verb allows a user (or service account) to assign an existing Role or ClusterRole to subjects (users, groups, or service accounts) by creating RoleBindings or ClusterRoleBindings.</strong></p>
 <h2 id="configure-vault">Configure vault<a class="headerlink" href="#configure-vault" title="Permanent link">&para;</a></h2>
-<pre><code class="language-bash">K8S_JWT_TOKEN=$(kubectl get secret vault-auth-token -o jsonpath=&quot;{.data.token}&quot; | base64 -d)
-K8S_CA_CERT=$(kubectl get secret vault-auth-token -o jsonpath=&quot;{['data']['ca\.crt']}&quot; | base64 -d)
-vault secrets enable kubernetes
-vault write -f kubernetes/config \
-    kubernetes_host=&quot;https://127.0.0.1:6443&quot; \
-    kubernetes_ca_cert=&quot;$K8S_CA_CERT&quot; \
-    service_account_jwt=&quot;$K8S_JWT_TOKEN&quot;
-vault write kubernetes/roles/test \
-    allowed_kubernetes_namespaces=&quot;default&quot; \
-    generated_role_rules=&quot;$(jq -c . tmp.json)&quot; \
-    token_default_ttl=&quot;10m&quot;
-
-vault write \
-    kubernetes/creds/test \
-    ttl=20m
-</code></pre>
-<pre><code>#generated_role_rules="rules:\n- apiGroups: [\"\"]\n  resources: [\"pods\"]\n  verbs: [\"list\"]" \
-</code></pre>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nv">K8S_JWT_TOKEN</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>vault-auth-token<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s2">&quot;{.data.token}&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="k">)</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nv">K8S_CA_CERT</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>vault-auth-token<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s2">&quot;{[&#39;data&#39;][&#39;ca\.crt&#39;]}&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="k">)</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>vault<span class="w"> </span>secrets<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>kubernetes
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>vault<span class="w"> </span>write<span class="w"> </span>-f<span class="w"> </span>kubernetes/config<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="nv">kubernetes_host</span><span class="o">=</span><span class="s2">&quot;https://127.0.0.1:6443&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">    </span><span class="nv">kubernetes_ca_cert</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$K8S_CA_CERT</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="nv">service_account_jwt</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$K8S_JWT_TOKEN</span><span class="s2">&quot;</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>vault<span class="w"> </span>write<span class="w"> </span>kubernetes/roles/test<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="nv">allowed_kubernetes_namespaces</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="nv">generated_role_rules</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>jq<span class="w"> </span>-c<span class="w"> </span>.<span class="w"> </span>tmp.json<span class="k">)</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="nv">token_default_ttl</span><span class="o">=</span><span class="s2">&quot;10m&quot;</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>vault<span class="w"> </span>write<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">    </span>kubernetes/creds/test<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">    </span><span class="nv">ttl</span><span class="o">=</span>20m
+</span></code></pre></div>
+<div class="language-text highlight"><pre><span></span><code>#generated_role_rules=&quot;rules:\n- apiGroups: [\&quot;\&quot;]\n  resources: [\&quot;pods\&quot;]\n  verbs: [\&quot;list\&quot;]&quot; \
+</code></pre></div>
 <h2 id="create-a-pod-to-show-we-can-list-pods">create a pod to show we can list pods<a class="headerlink" href="#create-a-pod-to-show-we-can-list-pods" title="Permanent link">&para;</a></h2>
-<pre><code class="language-bash">kubectl run nginx --image=nginx
-</code></pre>
+<p><code>bash
+kubectl run nginx --image=nginx</code></p>
 <h2 id="fetch-credentials">fetch credentials<a class="headerlink" href="#fetch-credentials" title="Permanent link">&para;</a></h2>
-<pre><code class="language-bash">token=$(vault write -field=service_account_token \
-    kubernetes/creds/test \
-    kubernetes_namespace=default \
-    ttl=20m)
-curl -H &quot;Authorization: Bearer $token&quot; -sk $(kubectl config view --minify -o 'jsonpath={.clusters[].cluster.server}')/api/v1/namespaces/default/pods | jq .
-</code></pre>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nv">token</span><span class="o">=</span><span class="k">$(</span>vault<span class="w"> </span>write<span class="w"> </span>-field<span class="o">=</span>service_account_token<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span>kubernetes/creds/test<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="nv">kubernetes_namespace</span><span class="o">=</span>default<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="nv">ttl</span><span class="o">=</span>20m<span class="k">)</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>curl<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$token</span><span class="s2">&quot;</span><span class="w"> </span>-sk<span class="w"> </span><span class="k">$(</span>kubectl<span class="w"> </span>config<span class="w"> </span>view<span class="w"> </span>--minify<span class="w"> </span>-o<span class="w"> </span><span class="s1">&#39;jsonpath={.clusters[].cluster.server}&#39;</span><span class="k">)</span>/api/v1/namespaces/default/pods<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.
+</span></code></pre></div>
 <h2 id="example-kubeconfig">example kubeconfig<a class="headerlink" href="#example-kubeconfig" title="Permanent link">&para;</a></h2>
-<pre><code>kind get kubeconfig &gt; vault-kubeconfig.yml
-</code></pre>
-<pre><code class="language-yaml"># vault-kubeconfig.yml
-[...]
-users:
-- name: kind-kind
-  user:
-    exec:
-      apiVersion: client.authentication.k8s.io/v1beta1
-      command: ./exec.sh
-      env:
-        - name: VAULT_ROLE
-          value: test
-        - name: K8S_NAMESPACE
-          value: default
-        - name: TTL
-          value: 20m
-</code></pre>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>kind get kubeconfig &gt; vault-kubeconfig.yml
+</span></code></pre></div>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># vault-kubeconfig.yml</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="p p-Indicator">[</span><span class="nv">...</span><span class="p p-Indicator">]</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nt">users</span><span class="p">:</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kind-kind</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">  </span><span class="nt">user</span><span class="p">:</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">    </span><span class="nt">exec</span><span class="p">:</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">      </span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">client.authentication.k8s.io/v1beta1</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">      </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./exec.sh</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">      </span><span class="nt">env</span><span class="p">:</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VAULT_ROLE</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">K8S_NAMESPACE</span>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TTL</span>
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20m</span>
+</span></code></pre></div>
 <h2 id="example-exec-script">Example exec script:<a class="headerlink" href="#example-exec-script" title="Permanent link">&para;</a></h2>
-<pre><code class="language-bash">#!/usr/bin/env bash
-cat &lt;&lt;EOF
-{
-  &quot;apiVersion&quot;: &quot;client.authentication.k8s.io/v1beta1&quot;,
-  &quot;kind&quot;: &quot;ExecCredential&quot;,
-  &quot;status&quot;: {
-    &quot;token&quot;: &quot;$(vault write -format=json -field=service_account_token kubernetes/creds/&quot;${VAULT_ROLE}&quot; kubernetes_namespace=&quot;${K8S_NAMESPACE}&quot; ttl=&quot;${TTL}&quot; | jq -r .)&quot;
-  }
-}
-EOF
-</code></pre>
-<p>SA works for namespace default:</p>
-<pre><code class="language-bash">KUBECONFIG=vault-kubeconfig.yml k get po
-NAME    READY   STATUS    RESTARTS   AGE
-nginx   1/1     Running   0          15m
-</code></pre>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="ch">#!/usr/bin/env bash</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>cat<span class="w"> </span><span class="s">&lt;&lt;EOF</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="s">{</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="s">  &quot;apiVersion&quot;: &quot;client.authentication.k8s.io/v1beta1&quot;,</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="s">  &quot;kind&quot;: &quot;ExecCredential&quot;,</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="s">  &quot;status&quot;: {</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="s">    &quot;token&quot;: &quot;$(vault write -format=json -field=service_account_token kubernetes/creds/&quot;${VAULT_ROLE}&quot; kubernetes_namespace=&quot;${K8S_NAMESPACE}&quot; ttl=&quot;${TTL}&quot; | jq -r .)&quot;</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="s">  }</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="s">}</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="s">EOF</span>
+</span></code></pre></div>
+<p>SA works for namespace default:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nv">KUBECONFIG</span><span class="o">=</span>vault-kubeconfig.yml<span class="w"> </span>k<span class="w"> </span>get<span class="w"> </span>po
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>NAME<span class="w">    </span>READY<span class="w">   </span>STATUS<span class="w">    </span>RESTARTS<span class="w">   </span>AGE
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>nginx<span class="w">   </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>15m
+</span></code></pre></div></p>
 <p>but not for kube-system:</p>
-<pre><code>KUBECONFIG=vault-kubeconfig.yml k get po -n kube-config
-Error from server (Forbidden): pods is forbidden: User &quot;system:serviceaccount:default:tmp-sa&quot; cannot list resource &quot;pods&quot; in API group &quot;&quot; in the namespace &quot;kube-config&quot;
-</code></pre>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>KUBECONFIG=vault-kubeconfig.yml k get po -n kube-config
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>Error from server (Forbidden): pods is forbidden: User &quot;system:serviceaccount:default:tmp-sa&quot; cannot list resource &quot;pods&quot; in API group &quot;&quot; in the namespace &quot;kube-config&quot;
+</span></code></pre></div>
 <h1 id="teardown">teardown<a class="headerlink" href="#teardown" title="Permanent link">&para;</a></h1>
-<pre><code class="language-bash">kind delete cluster
-kill -9 $(pgrep -x vault)
-</code></pre>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>kind<span class="w"> </span>delete<span class="w"> </span>cluster
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="nb">kill</span><span class="w"> </span>-9<span class="w"> </span><span class="k">$(</span>pgrep<span class="w"> </span>-x<span class="w"> </span>vault<span class="k">)</span>
+</span></code></pre></div>
 
 
 
