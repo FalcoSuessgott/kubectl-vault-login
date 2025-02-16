@@ -840,9 +840,9 @@
 <h2 id="configure-vault">Configure <code>Vault</code><a class="headerlink" href="#configure-vault" title="Permanent link">&para;</a></h2>
 <p>Lastly, we will need to start and configure a local <code>Vault Server</code>:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>vault<span class="w"> </span>server<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">        </span>-dev<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">        </span>-dev-listen-address<span class="o">=</span><span class="m">0</span>.0.0.0:8200<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">        </span>-dev-root-token-id<span class="o">=</span>root<span class="w"> </span><span class="p">&amp;</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span>-dev<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span>dev-listen-address<span class="o">=</span><span class="m">0</span>.0.0.0:8200<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span>dev-root-token-id<span class="o">=</span>root
 </span></code></pre></div>
 <p>Now, we will configure the <code>Kubernetes Secrets Engine</code> to connect to the local <code>kind</code> Cluster with the <code>vault-auth</code> <code>Service Account</code> and creating a role <code>kind</code> that will create a <code>Service Account Token</code> for the <code>tmp-sa</code> Service Account:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">VAULT_ADDR</span><span class="o">=</span><span class="s2">&quot;http://127.0.0.1:8200&quot;</span>
