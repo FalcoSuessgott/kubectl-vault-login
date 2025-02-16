@@ -13,7 +13,7 @@ brew install falcosuessgott/tap/kubectl-vault-login
 ## `curl`
 ```
 version=$(curl https://api.github.com/repos/falcosuessgott/kubectl-vault-login/releases/latest -s | jq .name -r)
-curl -OL "https://github.com/FalcoSuessgott/kubectl-vault-login/releases/download/${version}/vkv_$(uname)_$(uname -m).tar.gz"
+curl -OL "https://github.com/FalcoSuessgott/kubectl-vault-login/releases/download/${version}/kubectl-vault-login_$(uname)_$(uname -m).tar.gz"
 tar xzf kubectl-vault-login_$(uname)_$(uname -m).tar.gz
 chmod u+x kubectl-vault-login
 ./kubectl-vault-login version
