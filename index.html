@@ -481,9 +481,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#how-does-this-work" class="md-nav__link">
+  <a href="#how-does-it-work" class="md-nav__link">
     <span class="md-ellipsis">
-      How does this work
+      How does it work
     </span>
   </a>
   
@@ -525,8 +525,8 @@
 <h1 id="kubectl-vault-login">kubectl-vault-login<a class="headerlink" href="#kubectl-vault-login" title="Permanent link">&para;</a></h1>
 <p>Ever needed short-lived and fine-grained <code>kubectl</code> access to <code>Kubernetes</code>-Cluster for some operations during CI/CD?</p>
 <p>Well, <code>kubectl-vault-login</code> allws you to do exactly this!</p>
-<p>By leveraging <a href="https://developer.hashicorp.com/vault/docs/secrets/kubernetes">HashiCorp Vaults Kubernetes Secrets Engine</a> you can create <code>Service Accounts</code> and <code>Service Account tokens</code> with a <strong>tight RBAC</strong> and a <strong>low TTL</strong> - making it incredibly useful for CI/CD Operations, such as <code>kubectl apply</code></p>
-<h2 id="how-does-this-work">How does this work<a class="headerlink" href="#how-does-this-work" title="Permanent link">&para;</a></h2>
+<p>By leveraging <a href="https://developer.hashicorp.com/vault/docs/secrets/kubernetes">HashiCorp Vaults Kubernetes Secrets Engine</a> you can create <code>Service Accounts</code> and <code>Service Account tokens</code> with a <strong>tight RBAC</strong> and a <strong>low TTL</strong> - making it incredibly useful for CI/CD Operations, such as <code>kubectl apply</code> commands.</p>
+<h2 id="how-does-it-work">How does it work<a class="headerlink" href="#how-does-it-work" title="Permanent link">&para;</a></h2>
 <p>The <a href="https://developer.hashicorp.com/vault/docs/secrets/kubernetes">HashiCorp Vaults Kubernetes Secrets Engine</a> can operate in 3 modes:</p>
 <ol>
 <li>Creating a <code>Service Account Token</code> for an already existing <code>Service Account</code> with a pre-existing <code>Role</code> &amp; <code>Rolebinding</code></li>
@@ -543,7 +543,7 @@
 <li>Patch your <code>kubeconfig</code> to use an <code>ExeConfig</code></li>
 <li>Run any <code>kubectl</code> plugin that is allowed in your RBAC-setup</li>
 </ol>
-<p>Checkout the guide</p>
+<p>Checkout the <a href="mode-01/">Guides</a></p>
 
 
 
