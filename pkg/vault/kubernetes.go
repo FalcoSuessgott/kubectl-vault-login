@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 )
 
 // nolint: gosec
@@ -14,6 +15,7 @@ type Credentials struct {
 	ServiceAccountName      string `json:"service_account_name"`
 	ServiceAccountNamespace string `json:"service_account_namespace"`
 	TTL                     int    `json:"ttl"`
+	ValidFrom, ValidUntil time.Time
 }
 
 func (v *Vault) GetKubernetesCredentials(ctx context.Context) (*Credentials, error) {

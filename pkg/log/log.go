@@ -20,25 +20,12 @@ const (
 	LogFilePathEnvVar = "KUBECTL_VAULT_LOGIN_LOG_PATH"
 )
 
-type AuthLog struct {
-	file string
-	Log  *Log
+type Logger interface {
+	ReadLogfile() ([]byte, error)
+	WriteLogFile()
 }
 
-type Log struct {
-	Current  *Entry   `json:"current"`
-	Previous []*Entry `json:"previous"`
-}
-
-type Entry struct {
-	ServiceAccountName      string    `json:"service_account_name"`
-	ServiceAccountNamespace string    `json:"service_account_namespace"`
-	Uid                     string    `json:"uid"`
-	ValidFrom               time.Time `json:"valid_from"`
-	ValidUntil              time.Time `json:"valid_until"`
-}
-
-func New() (*AuthLog, error) {
+func Shift(l Logger) ([]byte, error) {
 	logFilePath := "/tmp/"
 
 	if v, ok := os.LookupEnv(LogFilePathEnvVar); ok {
@@ -62,9 +49,12 @@ func New() (*AuthLog, error) {
 		return nil, fmt.Errorf("error creating or appending to log file %s: %w", logFile, err)
 	}
 
-	return &AuthLog{
-		file: logFile,
-	}, nil
+	data, err := l.ReadLogfile()
+	if err != nil {
+		return nil, fmt.Errorf("error reading log file %w", err)
+	}
+
+
 }
 
 func (a *AuthLog) Read() ([]byte, error) {
