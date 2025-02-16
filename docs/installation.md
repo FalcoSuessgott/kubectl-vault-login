@@ -7,7 +7,7 @@ tbd.
 
 ## `brew`
 ```
-brew install falcosuessgott/tap/kubectl-vault-login`
+brew install falcosuessgott/tap/kubectl-vault-login
 ```
 
 ## `curl`

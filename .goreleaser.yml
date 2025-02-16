@@ -46,7 +46,7 @@ brews:
       branch: main
       token: "{{ .Env.HOMEBREW_TAP }}"
     directory: Formula
-    homepage: https://github.com/FalcoSuessgott/mdtmpl
+    homepage: https://github.com/FalcoSuessgott/kubectl-vault-login
     description: "kubectl-vault-login"
     install: |
       bin.install "kubectl-vault-login"
