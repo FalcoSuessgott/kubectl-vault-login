@@ -552,6 +552,33 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#configure-vault" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configure Vault
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#putting-it-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      Putting it together
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#teardown" class="md-nav__link">
+    <span class="md-ellipsis">
+      Teardown
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -572,7 +599,7 @@
         
   
   <span class="md-ellipsis">
-    Creating a Service Account, a Service Account Token and the Rolebinding for an pre-existing Role
+    [Creating a Service Account, a Service Account Token and the Rolebinding for an pre-existing Role]
     
   </span>
   
@@ -651,6 +678,33 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#configure-vault" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configure Vault
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#putting-it-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      Putting it together
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#teardown" class="md-nav__link">
+    <span class="md-ellipsis">
+      Teardown
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -700,7 +754,8 @@
 <p>The following manifest, creates a <code>Service Account</code> <code>vault-auth</code> and binds the role <code>service-account-creator</code> to it, which allows to create <code>Service Accounts</code> and <code>Service Account Tokens</code>. This <code>Service Account</code> is being used by <code>Vault</code>:</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<h1 id="kubernetes-prevents-users-including-service-accounts-from-granting-rbac-permissions-they-do-not-already-have-themselves"><strong>Kubernetes prevents users (including service accounts) from granting RBAC permissions they do not already have themselves</strong><a class="headerlink" href="#kubernetes-prevents-users-including-service-accounts-from-granting-rbac-permissions-they-do-not-already-have-themselves" title="Permanent link">&para;</a></h1>
+<p><strong>Kubernetes prevents users (including service accounts) from granting RBAC permissions they do not already have themselves.
+Thats why we have to assign <code>bind</code> and <code>escalate</code> as <code>verbs</code></strong></p>
 </div>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="l l-Scalar l-Scalar-Plain">cat &lt;&lt;EOF | kubectl create -f -</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
@@ -752,7 +807,7 @@
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">        </span>-dev-listen-address<span class="o">=</span><span class="m">0</span>.0.0.0:8200<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">        </span>-dev-root-token-id<span class="o">=</span>root<span class="w"> </span><span class="p">&amp;</span>
 </span></code></pre></div>
-<p>Now, we will configure the <code>Kubernetes Secrets Engine</code> to connect to the local <code>kind</code> Cluster with the <code>vault-auth</code> <code>Service Account</code> and creating a role <code>kind</code> that will create a <code>Service Account Token</code> for the <code>tmp-sa</code> Service Account:</p>
+<p>Now, we will configure the <code>Kubernetes Secrets Engine</code> to connect to the local <code>kind</code> Cluster with the <code>vault-auth</code> <code>Service Account</code> and creating a role <code>kind</code> that will create a <code>Service Acccount</code> and <code>Service Account Token</code>:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">VAULT_ADDR</span><span class="o">=</span><span class="s2">&quot;http://127.0.0.1:8200&quot;</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">VAULT_TOKEN</span><span class="o">=</span><span class="s2">&quot;root&quot;</span>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">VAULT_TLS_SKIP_VERIFY</span><span class="o">=</span><span class="s2">&quot;true&quot;</span>
@@ -902,13 +957,13 @@
         
         
           
-          <a href="../mode-03/" class="md-footer__link md-footer__link--next" aria-label="Next: Creating a Service Account, a Service Account Token and the Rolebinding for an pre-existing Role">
+          <a href="../mode-03/" class="md-footer__link md-footer__link--next" aria-label="Next: [Creating a Service Account, a Service Account Token and the Rolebinding for an pre-existing Role]">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Creating a Service Account, a Service Account Token and the Rolebinding for an pre-existing Role
+                [Creating a Service Account, a Service Account Token and the Rolebinding for an pre-existing Role]
               </div>
             </div>
             <div class="md-footer__button md-icon">
