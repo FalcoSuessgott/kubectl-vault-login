@@ -721,7 +721,7 @@
 </span></code></pre></div>
 <h2 id="curl"><code>curl</code><a class="headerlink" href="#curl" title="Permanent link">&para;</a></h2>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>version=$(curl https://api.github.com/repos/falcosuessgott/kubectl-vault-login/releases/latest -s | jq .name -r)
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>curl -OL &quot;https://github.com/FalcoSuessgott/kubectl-vault-login/releases/download/${version}/vkv_$(uname)_$(uname -m).tar.gz&quot;
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>curl -OL &quot;https://github.com/FalcoSuessgott/kubectl-vault-login/releases/download/${version}/kubectl-vault-login_$(uname)_$(uname -m).tar.gz&quot;
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>tar xzf kubectl-vault-login_$(uname)_$(uname -m).tar.gz
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>chmod u+x kubectl-vault-login
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>./kubectl-vault-login version
