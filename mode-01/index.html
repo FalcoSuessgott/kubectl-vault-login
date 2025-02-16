@@ -641,8 +641,13 @@ users:
       args:
         - --role=kind
 </code></pre>
+<p>You will still need to be authenticated to <code>Vault</code>:</p>
+<pre><code class="language-bash">export VAULT_ADDR=&quot;http://127.0.0.1:8200&quot;
+export VAULT_TOKEN=&quot;root&quot;
+export VAULT_TLS_SKIP_VERIFY=&quot;true&quot;
+</code></pre>
 <pre><code class="language-bash"># create a pod to see some results
-kubectl run nginx --image=nginx 
+kubectl run nginx --image=nginx
 # use the updated kubeconfig to list pods in the default namespace
 KUBECONFIG=kubeconfig.yml kubectl get pods
 </code></pre>
