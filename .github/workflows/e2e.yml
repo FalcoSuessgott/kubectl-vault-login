@@ -21,7 +21,7 @@ jobs:
       - uses: helm/kind-action@v1
         with:
           cluster_name: vault-k8s-secret
-          config: scripts/kind-config.yml
+          config: scripts/kind-config.yaml
 
       - name: create a SA and token that is used by vault for creating new service account tokens
         run: |
@@ -48,7 +48,11 @@ jobs:
           VAULT_TOKEN: root
 
       - name: Generate credentials
-        run: ./kubectl-vault-login -r kind
+        run: |
+          curl -sk \
+            -H "Authorization: Bearer $(./kubectl-vault-login -r kind | jq -r .status.token)" \
+            --fail-with-body \
+            $(kubectl config view --minify -o 'jsonpath={.clusters[].cluster.server}')/api/v1/namespaces/default/pods
         env:
           VAULT_ADDR: http://127.0.0.1:8200
           VAULT_TOKEN: root

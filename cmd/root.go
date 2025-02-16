@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/FalcoSuessgott/kubectl-vault-login/pkg/exec_credential"
 	"github.com/FalcoSuessgott/kubectl-vault-login/pkg/jwt"
@@ -13,6 +14,8 @@ import (
 )
 
 var Version = ""
+
+const MininmumTTL = 600.0
 
 type Options struct {
 	KubernetesSecretsMount string `env:"MOUNT"     envDefault:"kubernetes"`
@@ -26,7 +29,7 @@ type Options struct {
 	Version bool
 }
 
-// nolint: funlen, lll, dupword
+// nolint: funlen, lll, dupword, perfsprint
 func NewRootCmd() *cobra.Command {
 	ctx := context.Background()
 
@@ -46,6 +49,20 @@ func NewRootCmd() *cobra.Command {
 				fmt.Println(Version)
 
 				return nil
+			}
+
+			if o.KubernetesSecretsRole == "" {
+				return fmt.Errorf("role is required")
+			}
+
+			d, err := time.ParseDuration(o.TTL)
+			if err != nil {
+				return fmt.Errorf("failed to parse ttl: %w", err)
+			}
+
+			// error if ttl is less than 10 minutes
+			if d.Seconds() < MininmumTTL {
+				return fmt.Errorf("ttl must be at least 10 minutes (600s) but was %2.f", d.Seconds())
 			}
 
 			// auth
@@ -86,7 +103,7 @@ func NewRootCmd() *cobra.Command {
 	cmd.Flags().StringVarP(&o.KubernetesSecretsMount, "mount", "m", o.KubernetesSecretsMount, "The Kubernetes secrets mount path (VAULT_K8S_LOGIN_MOUNT)")
 	cmd.Flags().StringVarP(&o.KubernetesSecretsRole, "role", "r", o.KubernetesSecretsRole, "The name of the role to generate credentials for (VAULT_K8S_LOGIN_ROLE)")
 	cmd.Flags().StringVarP(&o.KubernetesNamespace, "ns", "n", o.KubernetesNamespace, "The name of the Kubernetes namespace in which to generate the credentials (VAULT_K8S_LOGIN_NAMESPACE)")
-	cmd.Flags().StringVarP(&o.TTL, "ttl", "t", o.TTL, "The ttl of the generated Kubernetes service account (VAULT_K8S_LOGIN_TTL)")
+	cmd.Flags().StringVarP(&o.TTL, "ttl", "t", o.TTL, "The TTL of the generated Kubernetes service account (VAULT_K8S_LOGIN_TTL)")
 	cmd.Flags().BoolVarP(&o.ClusterRoleBinding, "crb", "c", o.ClusterRoleBinding, "If true, generate a ClusterRoleBinding to grant permissions across the whole cluster instead of within a namespace (VAULT_K8S_LOGIN_CRB)")
 	cmd.Flags().StringVarP(&o.Audiences, "audiences", "a", o.Audiences, "A comma separated string containing the intended audiences of the generated Kubernetes service account (VAULT_K8S_LOGIN_AUDIENCES)")
 
