@@ -13,21 +13,23 @@
       
       
       
+        <link rel="prev" href="../installation/">
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.4">
     
     
       
-        <title>01: Generate a service account and a token, and bind a pre-existing Kubernetes role - kubectl-vault-login</title>
+        <title>Creating a Service Account Token for an already existing Service Account with a pre-existing Role & Rolebinding - kubectl-vault-login</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.8608ea7d.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.8608ea7d.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -46,7 +48,7 @@
       
     
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -72,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#01-generate-a-service-account-and-a-token-and-bind-a-pre-existing-kubernetes-role" class="md-skip">
+        <a href="#creating-a-service-account-token-for-an-already-existing-service-account-with-a-pre-existing-role-rolebinding" class="md-skip">
           Skip to content
         </a>
       
@@ -88,7 +90,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="kubectl-vault-login" class="md-header__button md-logo" aria-label="kubectl-vault-login" data-md-component="logo">
+    <a href=".." title="kubectl-vault-login" class="md-header__button md-logo" aria-label="kubectl-vault-login" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -108,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              01: Generate a service account and a token, and bind a pre-existing Kubernetes role
+              Creating a Service Account Token for an already existing Service Account with a pre-existing Role &amp; Rolebinding
             
           </span>
         </div>
@@ -207,11 +209,13 @@
         
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../.." class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href=".." class="md-tabs__link">
           
   
     
@@ -252,7 +256,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="kubectl-vault-login" class="md-nav__button md-logo" aria-label="kubectl-vault-login" data-md-component="logo">
+    <a href=".." title="kubectl-vault-login" class="md-nav__button md-logo" aria-label="kubectl-vault-login" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -279,6 +283,8 @@
       
   
   
+    
+  
   
   
     
@@ -295,23 +301,24 @@
     
     
       
+        
+        
+      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
         
           
           
           <div class="md-nav__link md-nav__container">
-            <a href="../.." class="md-nav__link ">
+            <a href=".." class="md-nav__link ">
               
   
   <span class="md-ellipsis">
@@ -323,13 +330,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_1" id="__nav_1_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_1" id="__nav_1_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_1">
             <span class="md-nav__icon md-icon"></span>
             kubectl-vault-login
@@ -345,7 +352,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../installation/" class="md-nav__link">
+      <a href="../installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -364,8 +371,10 @@
                 
   
   
+    
   
   
+  
     
     
       
@@ -375,20 +384,21 @@
     
       
       
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
         
           
+          
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1_3" >
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_3" checked>
         
           
-          <label class="md-nav__link" for="__nav_1_3" id="__nav_1_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_1_3" id="__nav_1_3_label" tabindex="">
             
   
   <span class="md-ellipsis">
@@ -400,7 +410,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_1_3">
             <span class="md-nav__icon md-icon"></span>
             Guides
@@ -411,10 +421,19 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../mode-01/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -424,6 +443,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -464,23 +484,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#kind" class="md-nav__link">
-    <span class="md-ellipsis">
-      kind
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -495,7 +498,7 @@
 
 
   
-    <a href="https://github.com/FalcoSuessgott/kubectl-vault-login/edit/master/docs/guide/03-create-sa-sa-token-role-role-binding.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/FalcoSuessgott/kubectl-vault-login/edit/master/docs/mode-01.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75z"/></svg>
     </a>
@@ -503,92 +506,156 @@
   
 
 
-<h1 id="01-generate-a-service-account-and-a-token-and-bind-a-pre-existing-kubernetes-role">01: Generate a service account and a token, and bind a pre-existing Kubernetes role<a class="headerlink" href="#01-generate-a-service-account-and-a-token-and-bind-a-pre-existing-kubernetes-role" title="Permanent link">&para;</a></h1>
-<h2 id="kind">kind<a class="headerlink" href="#kind" title="Permanent link">&para;</a></h2>
+<h1 id="creating-a-service-account-token-for-an-already-existing-service-account-with-a-pre-existing-role-rolebinding">Creating a <code>Service Account Token</code> for an already existing <code>Service Account</code> with a pre-existing <code>Role</code> &amp; <code>Rolebinding</code><a class="headerlink" href="#creating-a-service-account-token-for-an-already-existing-service-account-with-a-pre-existing-role-rolebinding" title="Permanent link">&para;</a></h1>
+<p>This guide will walk you through setting up <code>Kubernetes</code> and <code>Vault</code> and its <code>Kubernetes Secret Engine</code> to create a <code>Service Account Token</code> for an already existing <code>Service Account</code> with a pre-existing <code>Role</code> &amp; <code>Rolebinding</code></p>
+<h1 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h1>
+<p>You will need the following tools to be installed:</p>
+<ul>
+<li><a href="https://kind.sigs.k8s.io"><code>kind</code></a></li>
+<li><a href="https://developer.hashicorp.com/vault/docs/install"><code>Vault</code></a></li>
+<li><a href="https://falcosuessgott.github.io/kubectl-vault-login/"><code>kubectl-vault-login</code></a></li>
+</ul>
+<h1 id="setup-kind">Setup <code>kind</code><a class="headerlink" href="#setup-kind" title="Permanent link">&para;</a></h1>
 <pre><code class="language-bash">kind create cluster --config=kind-config.yml
 </code></pre>
-<h1 id="sa-token-vault-auth-token-ued-by-vault-that-is-allowed-to-create-service-account-tokens">SA token (vault-auth) + token ued by vault that is allowed to create service account tokens<a class="headerlink" href="#sa-token-vault-auth-token-ued-by-vault-that-is-allowed-to-create-service-account-tokens" title="Permanent link">&para;</a></h1>
-<pre><code class="language-bash">kubectl apply -f vault-auth.yml
+<p>you should now be able to run `kubectl commands:</p>
+<pre><code class="language-bash">kubectl get ns
+NAME                 STATUS   AGE
+default              Active   64m
+kube-node-lease      Active   64m
+kube-public          Active   64m
+kube-system          Active   64m
+local-path-storage   Active   63m
 </code></pre>
-<h2 id="vault">Vault<a class="headerlink" href="#vault" title="Permanent link">&para;</a></h2>
+<h1 id="configure-vault-access">Configure <code>Vault</code> access<a class="headerlink" href="#configure-vault-access" title="Permanent link">&para;</a></h1>
+<p>The following manifest, creates a <code>Service Account</code> <code>vault-auth</code> and binds the role <code>service-account-token-creator</code> to it, which allows to create <code>Service Account Tokens</code>. This <code>Service Account</code> is being used by <code>Vault</code> to create <code>Service Account Tokens</code> for the <code>tmp-sa</code> <code>Service Account</code> that we will create in the next section:</p>
+<pre><code class="language-yaml">cat &lt;&lt;EOF | kubectl create -f -
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: vault-auth
+automountServiceAccountToken: true
+---
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/service-account-token
+metadata:
+  name: vault-auth-token
+  annotations:
+    kubernetes.io/service-account.name: vault-auth
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: service-account-token-creator
+rules:
+  - apiGroups: [&quot;&quot;]
+    resources: [&quot;serviceaccounts/token&quot;]
+    verbs: [&quot;create&quot;, &quot;update&quot;]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: service-account-token-creator-binding
+subjects:
+  - kind: ServiceAccount
+    name: vault-auth
+roleRef:
+  kind: Role
+  name: service-account-token-creator
+  apiGroup: rbac.authorization.k8s.io
+EOF
+</code></pre>
+<h1 id="create-a-service-account-for-which-vault-creates-the-service-account-token">Create a <code>Service Account</code> for which <code>Vault</code> creates the <code>Service Account Token</code><a class="headerlink" href="#create-a-service-account-for-which-vault-creates-the-service-account-token" title="Permanent link">&para;</a></h1>
+<p>This manifest creates a <code>Service Account</code> <code>tmp-sa</code> that is bound to the <code>role-list-pods</code> role that <strong>only</strong> allows to <strong>list pods in the <code>default</code> namespace</strong>:</p>
+<pre><code class="language-yaml">cat &lt;&lt;EOF | kubectl create -f -
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: tmp-sa
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: role-list-pods
+rules:
+- apiGroups: [&quot;&quot;]
+  resources: [&quot;pods&quot;]
+  verbs: [&quot;list&quot;]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: role-abilities
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: role-list-pods
+subjects:
+- kind: ServiceAccount
+  name: tmp-sa
+EOF
+</code></pre>
+<h1 id="configure-vault">Configure <code>Vault</code><a class="headerlink" href="#configure-vault" title="Permanent link">&para;</a></h1>
+<p>Lastly, we will need to start and configure a local <code>Vault Server</code>:</p>
 <pre><code class="language-bash">vault server \
-    -dev \
-    -dev-listen-address=0.0.0.0:8200 \
-    -dev-root-token-id=root
+        -dev \
+        -dev-listen-address=0.0.0.0:8200 \
+        -dev-root-token-id=root &amp;
 </code></pre>
-<p><strong>Kubernetes prevents users (including service accounts) from granting RBAC permissions they do not already have themselves</strong>
-<strong>The "escalate" verb allows a user to grant roles with more privileges than they themselves have.</strong>
-<strong>The "bind" verb allows a user (or service account) to assign an existing Role or ClusterRole to subjects (users, groups, or service accounts) by creating RoleBindings or ClusterRoleBindings.</strong></p>
-<h2 id="configure-vault">Configure vault<a class="headerlink" href="#configure-vault" title="Permanent link">&para;</a></h2>
-<pre><code class="language-bash">K8S_JWT_TOKEN=$(kubectl get secret vault-auth-token -o jsonpath=&quot;{.data.token}&quot; | base64 -d)
+<p>Now, we will configure the <code>Kubernetes Secrets Engine</code> to connect to the local <code>kind</code> Cluster with the <code>vault-auth</code> <code>Service Account</code> and creating a role <code>kind</code> that will create a <code>Service Account Token</code> for the <code>tmp-sa</code> Service Account:</p>
+<pre><code class="language-bash">export VAULT_ADDR=&quot;http://127.0.0.1:8200&quot;
+export VAULT_TOKEN=&quot;root&quot;
+export VAULT_TLS_SKIP_VERIFY=&quot;true&quot;
+</code></pre>
+<pre><code class="language-bash">#!/usr/bin/env bash
+set -ex
+
+K8S_JWT_TOKEN=$(kubectl get secret vault-auth-token -o jsonpath=&quot;{.data.token}&quot; | base64 -d)
 K8S_CA_CERT=$(kubectl get secret vault-auth-token -o jsonpath=&quot;{['data']['ca\.crt']}&quot; | base64 -d)
+
 vault secrets enable kubernetes
 vault write -f kubernetes/config \
     kubernetes_host=&quot;https://127.0.0.1:6443&quot; \
     kubernetes_ca_cert=&quot;$K8S_CA_CERT&quot; \
     service_account_jwt=&quot;$K8S_JWT_TOKEN&quot;
-vault write kubernetes/roles/test \
-    allowed_kubernetes_namespaces=&quot;default&quot; \
-    generated_role_rules=&quot;$(jq -c . tmp.json)&quot; \
-    token_default_ttl=&quot;10m&quot;
 
-vault write \
-    kubernetes/creds/test \
-    ttl=20m
+vault write kubernetes/roles/kind \
+    allowed_kubernetes_namespaces=&quot;default&quot; \
+    service_account_name=&quot;tmp-sa&quot; \
+    token_default_ttl=&quot;10m&quot;
 </code></pre>
-<pre><code>#generated_role_rules="rules:\n- apiGroups: [\"\"]\n  resources: [\"pods\"]\n  verbs: [\"list\"]" \
+<h1 id="putting-it-together">Putting it together<a class="headerlink" href="#putting-it-together" title="Permanent link">&para;</a></h1>
+<p>Write the <code>kubeconfig</code> to a file:</p>
+<pre><code class="language-bash">kind get kubeconfig &gt; kind-kubeconfig.yml
 </code></pre>
-<h2 id="create-a-pod-to-show-we-can-list-pods">create a pod to show we can list pods<a class="headerlink" href="#create-a-pod-to-show-we-can-list-pods" title="Permanent link">&para;</a></h2>
-<pre><code class="language-bash">kubectl run nginx --image=nginx
-</code></pre>
-<h2 id="fetch-credentials">fetch credentials<a class="headerlink" href="#fetch-credentials" title="Permanent link">&para;</a></h2>
-<pre><code class="language-bash">token=$(vault write -field=service_account_token \
-    kubernetes/creds/test \
-    kubernetes_namespace=default \
-    ttl=20m)
-curl -H &quot;Authorization: Bearer $token&quot; -sk $(kubectl config view --minify -o 'jsonpath={.clusters[].cluster.server}')/api/v1/namespaces/default/pods | jq .
-</code></pre>
-<h2 id="example-kubeconfig">example kubeconfig<a class="headerlink" href="#example-kubeconfig" title="Permanent link">&para;</a></h2>
-<pre><code>kind get kubeconfig &gt; vault-kubeconfig.yml
-</code></pre>
-<pre><code class="language-yaml"># vault-kubeconfig.yml
+<p>and update it, to use <code>kubectl-vault-login</code> for obtaining access:</p>
+<pre><code class="language-yaml"># kind-kubeconfig.yml
 [...]
 users:
 - name: kind-kind
   user:
     exec:
       apiVersion: client.authentication.k8s.io/v1beta1
-      command: ./exec.sh
-      env:
-        - name: VAULT_ROLE
-          value: test
-        - name: K8S_NAMESPACE
-          value: default
-        - name: TTL
-          value: 20m
+      command: kubectl-vault-login
+      args:
+        - --role=kind
 </code></pre>
-<h2 id="example-exec-script">Example exec script:<a class="headerlink" href="#example-exec-script" title="Permanent link">&para;</a></h2>
-<pre><code class="language-bash">#!/usr/bin/env bash
-cat &lt;&lt;EOF
-{
-  &quot;apiVersion&quot;: &quot;client.authentication.k8s.io/v1beta1&quot;,
-  &quot;kind&quot;: &quot;ExecCredential&quot;,
-  &quot;status&quot;: {
-    &quot;token&quot;: &quot;$(vault write -format=json -field=service_account_token kubernetes/creds/&quot;${VAULT_ROLE}&quot; kubernetes_namespace=&quot;${K8S_NAMESPACE}&quot; ttl=&quot;${TTL}&quot; | jq -r .)&quot;
-  }
-}
-EOF
+<pre><code class="language-bash"># create a pod to see some results
+kubectl run nginx --image=nginx 
+# use the updated kubeconfig to list pods in the default namespace
+KUBECONFIG=kubeconfig.yml kubectl get pods
 </code></pre>
-<p>SA works for namespace default:</p>
-<pre><code class="language-bash">KUBECONFIG=vault-kubeconfig.yml k get po
-NAME    READY   STATUS    RESTARTS   AGE
-nginx   1/1     Running   0          15m
+<p>And you should see:</p>
+<pre><code class="language-bash">NAME    READY   STATUS    RESTARTS   AGE
+nginx   1/1     Running   0          73s
 </code></pre>
-<p>but not for kube-system:</p>
-<pre><code>KUBECONFIG=vault-kubeconfig.yml k get po -n kube-config
-Error from server (Forbidden): pods is forbidden: User &quot;system:serviceaccount:default:tmp-sa&quot; cannot list resource &quot;pods&quot; in API group &quot;&quot; in the namespace &quot;kube-config&quot;
+<p>The role <code>role-list-pods</code> allows listing pods for the <code>default</code> namespace, but not for <code>kube-system</code>:</p>
+<pre><code class="language-bash">KUBECONFIG=vault-kubeconfig.yml k get pod -n kube-config
+Error from server (Forbidden): pods is forbidden: User &quot;system:serviceaccount:default:v-token-kind-1739680669-u5x0uqreffqt8hf2qdydpksf&quot; cannot list resource &quot;pods&quot; in API group &quot;&quot; in the namespace &quot;kube-system&quot;
 </code></pre>
-<h1 id="teardown">teardown<a class="headerlink" href="#teardown" title="Permanent link">&para;</a></h1>
+<h1 id="teardown">Teardown<a class="headerlink" href="#teardown" title="Permanent link">&para;</a></h1>
+<p>Tear everything down by running:</p>
 <pre><code class="language-bash">kind delete cluster
 kill -9 $(pgrep -x vault)
 </code></pre>
@@ -612,7 +679,7 @@ kill -9 $(pgrep -x vault)
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">February 10, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">February 16, 2025</span>
   </span>
 
     
@@ -628,7 +695,7 @@ kill -9 $(pgrep -x vault)
     </span>
     <nav>
       
-        <a href="mailto:tom.morelly@clearroute.io">Tom Morelly</a>
+        <a href="mailto:tom.morelly@cba.com.au">Tom Morelly</a>
     </nav>
   </span>
 
@@ -659,6 +726,28 @@ kill -9 $(pgrep -x vault)
         <footer class="md-footer">
   
     
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../installation/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Installation">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Installation
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
@@ -682,10 +771,10 @@ kill -9 $(pgrep -x vault)
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.indexes", "content.code.copy", "content.action.edit", "navigation.top", "navigation.expand", "navigation.footer"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.indexes", "content.code.copy", "content.action.edit", "navigation.top", "navigation.expand", "navigation.footer"], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.f1b6f286.min.js"></script>
+      <script src="../assets/javascripts/bundle.f1b6f286.min.js"></script>
       
     
   </body>
