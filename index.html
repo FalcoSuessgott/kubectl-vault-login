@@ -614,7 +614,7 @@
 <li>Install the plugin</li>
 <li>Configure Kubernetes to allow <code>Vault</code> creating the resources</li>
 <li>Configure <a href="https://developer.hashicorp.com/vault/docs/secrets/kubernetes">HashiCorp Vaults Kubernetes Secrets Engine</a></li>
-<li>Patch your <code>kubeconfig</code> to use an <code>ExeConfig</code>:</li>
+<li>Patch your <code>kubeconfig</code> to use <code>kubectl-vault-login</code>:</li>
 </ol>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># $KUBECONFIG</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="p p-Indicator">[</span><span class="nv">...</span><span class="p p-Indicator">]</span>
