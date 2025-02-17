@@ -1,5 +1,6 @@
-# Creating a `Service Account Token` for an already existing `Service Account` with a pre-existing `Role` & `Rolebinding`
-This guide will walk you through setting up `kind` and `Vault` and its Kubernetes Secret Engine to create a Service Account Token for an already existing Service Account linked to a Role & Rolebinding
+# Create a ServiceAccount Token for a ServiceAccount with Role & RoleBinding
+!!! tip
+    This guide will walk you through setting up `kind` and `Vault` and its Kubernetes Secret Engine to create a Service Account Token for a pre-existing ServiceAccount with Role & RoleBinding
 
 ## Prerequisites
 You will need the following tools to be installed:
@@ -29,21 +30,22 @@ local-path-storage   Active   63m
 ```
 
 ## Configure `Vault` access
-The following manifest, creates a Service Account `vault-auth` and assigns it the role `service-account-token-creator`, which allows to create Service Account Tokens.
+The following manifest, creates a ServiceAccount `vault-auth` and assigns it the role `service-account-token-creator`, which allows to create Service Account Tokens.
 
-This Service Account is being used by `Vault` to create Service Account Tokens for the `tmp-sa` Service Account that we will create in the next section:
+!!! tip
+    This Service Account is going to be used by `Vault`
 
 ```yaml
-cat <<EOF | kubectl create -f -
+cat <<EOF | kubectl apply -f -
 {!../scripts/mode-01/vault-auth.yml!}
 EOF
 ```
 
-## Create a Service Account for which `Vault` creates the Service Account Token
+## Create a Service Account for which `Vault` creates the ServiceAccount Token
 This manifest creates a Service Account `tmp-sa` that is bound to the `role-list-pods` role that **only** allows to **list pods in the `default` namespace**:
 
 ```yaml
-cat <<EOF | kubectl create -f -
+cat <<EOF | kubectl apply -f -
 {!../scripts/mode-01/tmp-sa.yml!}
 EOF
 ```
@@ -58,17 +60,28 @@ vault server \
 	dev-root-token-id=root
 ```
 
-Now, we will configure the `Kubernetes Secrets Engine` to connect to the local `kind` Cluster with the `vault-auth` `Service Account` and creating a role `kind` that will create a `Service Account Token` for the `tmp-sa` Service Account:
-
-!!! tip
-    Make sure to authenticate to `Vault`!
-    These environment values only work for this guide.
+Authenticate to `Vault` and check with `vault status`:
 
 ```bash
 {!../.envrc!}
+> vault status
+Key             Value
+---             -----
+Seal Type       shamir
+Initialized     true
+Sealed          false
+Total Shares    1
+Threshold       1
+Version         1.18.3
+Build Date      2024-12-16T14:00:53Z
+Storage Type    inmem
+Cluster Name    vault-cluster-4cab3957
+Cluster ID      597257da-8e8d-6147-c379-e93e3a6013c7
+HA Enabled      false
 ```
 
-Once authenticated (test with `vault status`), run:
+Now, we will configure the Kubernetes Secrets Engine to connect to the local `kind` Cluster with the `vault-auth` ServiceAccount and create a role `kind`, which will create a ServiceAccount Tokens for the `tmp-sa` ServiceAccount:
+
 ```bash
 {!../scripts/mode-01/setup-vault.sh!}
 ```
@@ -80,7 +93,7 @@ Write `kind`s `kubeconfig` to a file:
 kind get kubeconfig > kind-kubeconfig.yml
 ```
 
-and update it, to use `kubectl-vault-login` for obtaining access:
+and update it, to use `kubectl-vault-login` for authentication:
 
 ```yaml
 # kind-kubeconfig.yml
@@ -93,12 +106,6 @@ users:
       command: kubectl-vault-login
       args:
         - --role=kind
-```
-
-You will still need to be authenticated to `Vault`:
-
-```bash
-{!../.envrc!}
 ```
 
 ```bash

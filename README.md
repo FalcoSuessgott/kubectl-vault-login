@@ -8,11 +8,11 @@ By leveraging [HashiCorp Vaults Kubernetes Secrets Engine](https://developer.has
 ## How does it work
 The [HashiCorp Vaults Kubernetes Secrets Engine](https://developer.hashicorp.com/vault/docs/secrets/kubernetes) can operate in 3 modes:
 
-1. [Creating a `Service Account Token` for an already existing `Service Account` with a pre-existing `Role` & `Rolebinding`](https://falcosuessgott.github.io/kubectl-vault-login/mode-01/)
-2. [Creating a `Service Account` and a `Service Account Token` with a pre-existing `Role` & `Rolebinding`](https://falcosuessgott.github.io/kubectl-vault-login/mode-02/)
-3. [Creating a `Service Account`, a `Service Account Token` and the `Rolebinding` for an pre-existing `Role`](https://falcosuessgott.github.io/kubectl-vault-login/mode-03/)
+1. [Create a ServiceAccount Token for a ServiceAccount with Role & RoleBinding](https://falcosuessgott.github.io/kubectl-vault-login/mode-01/)
+2. [Create a ServiceAccount, Token and RoleBinding for a (Cluster)-Role (e.g `cluster-admin`)](https://falcosuessgott.github.io/kubectl-vault-login/mode-02/)
+3. [Create a ServiceAccount, a Token, Role and RoleBinding](https://falcosuessgott.github.io/kubectl-vault-login/mode-03/)
 
-Every resource created by `Vault` will automatically revoked once the lease is expired (minimum 600s).
+Every resource created by `Vault` will automatically revoked once the lease is expired (minimum `600s`).
 
 ![img](./docs/assets/workflow.svg)
 
@@ -20,10 +20,10 @@ Every resource created by `Vault` will automatically revoked once the lease is e
 For every mode, the steps are the same:
 
 1. Install the plugin
-2. Configure a Kubernetes Service Account for `Vault` that is being used to create the resources
+2. Configure a Kubernetes ServiceAccount for `Vault` that is being used to create RBAC resources
 3. Configure [HashiCorp Vaults Kubernetes Secrets Engine](https://developer.hashicorp.com/vault/docs/secrets/kubernetes)
-4. Create Roles and Rolebindings for which the Service Accounts are going to be created
-5. Patch your `kubeconfig` to use `kubectl-vault-login`:
+4. Create the necessary (Cluster)-Roles and (Cluster)-RoleBindings for which the ServiceAccounts are going to be created
+5. Patch your `$KUBECONFIG` to use `kubectl-vault-login` as an [`ExecCredential`](https://kubernetes.io/docs/reference/config-api/client-authentication.v1beta1/):
 
 ```yaml
 # $KUBECONFIG
@@ -37,7 +37,6 @@ users:
       args:
         - --role=kind
 ```
-
 6. Run any `kubectl` plugin that is allowed in your RBAC-setup
 
 **Checkout the [Guides](https://falcosuessgott.github.io/kubectl-vault-login/mode-01/)**

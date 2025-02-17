@@ -12,5 +12,6 @@ vault write -f kubernetes/config \
 
 vault write kubernetes/roles/kind \
     allowed_kubernetes_namespaces="default" \
-    kubernetes_role_name="role-list-pods" \
+    kubernetes_role_name="cluster-admin" \
+    kubernetes_role_type="ClusterRole" \
     token_default_ttl="10m"

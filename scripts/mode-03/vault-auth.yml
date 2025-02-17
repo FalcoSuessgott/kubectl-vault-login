@@ -16,7 +16,7 @@ metadata:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: service-account-creator
+  name: role-creator
 rules:
   - apiGroups: [""]
     resources: ["serviceaccounts"]
@@ -26,10 +26,10 @@ rules:
     verbs: ["create"]
   - apiGroups: ["rbac.authorization.k8s.io"]
     resources: ["roles"]
-    verbs: ["bind", "create", "update", "patch", "delete", "get", "list", "escalate"]
+    verbs: ["bind", "create", "update", "delete", "escalate"]
   - apiGroups: ["rbac.authorization.k8s.io"]
     resources: ["rolebindings"]
-    verbs: ["create", "get", "list", "watch", "update", "patch", "delete"]
+    verbs: ["bind", "create", "update", "delete", "escalate"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -40,5 +40,5 @@ subjects:
     name: vault-auth
 roleRef:
   kind: Role
-  name: service-account-creator
+  name: role-creator
   apiGroup: rbac.authorization.k8s.io

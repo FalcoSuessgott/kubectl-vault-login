@@ -1,5 +1,6 @@
-# [Creating a `Service Account`, a `Service Account Token` and the `Rolebinding` for an pre-existing `Role`]
-This guide will walk you through setting up `Kubernetes` and `Vault` and its `Kubernetes Secret Engine` to create a `Service Account` including `Service Account Token` and `Rolebinding` for an already existing `Service Account` with a pre-existing `Role`
+# Create a ServiceAccount, a Token, Role and RoleBinding
+!!! tip
+    This guide will walk you through setting up `kind` and `Vault` and its Kubernetes Secret Engine to create a ServiceAccount, Token, Role and RoleBinding.
 
 ## Prerequisites
 You will need the following tools to be installed:
@@ -10,10 +11,13 @@ You will need the following tools to be installed:
 
 ## Setup `kind`
 ```bash
-kind create cluster --config=kind-config.yml
+cat <<EOF >>kind-config.yaml
+{!../scripts/kind-config.yaml!}
+EOF
+kind create cluster --config=kind-config.yaml
 ```
 
-you should now be able to run `kubectl commands:
+you should now be able to run `kubectl` commands:
 
 ```bash
 kubectl get ns
@@ -26,16 +30,17 @@ local-path-storage   Active   63m
 ```
 
 ## Configure `Vault` access
-The following manifest, creates a `Service Account` `vault-auth` and binds the role `service-account-creator` to it, which allows to create `Service Account Tokens`:
+The following manifest, creates a ServiceAccount `vault-auth` and assigns it the role `role-creator`, which allows to create Service Account, Tokens, Roles and RoleBindings.
+
+!!! tip
+    This Service Account is going to be used by `Vault`
 
 !!! note
     **Kubernetes prevents users (including service accounts) from granting RBAC permissions they do not already have themselves.
-    Thats why we have to assign `bind` and `escalate` as `verbs`**
-    (The "escalate" verb allows a user to grant roles with more privileges than they themselves have.)
-    (The "bind" verb allows a user (or service account) to assign an existing Role or ClusterRole to subjects (users, groups, or service accounts) by creating RoleBindings or ClusterRoleBindings.)
+    Thats why we have to assign `bind` and `escalate` as `verbs` for `roles` and `rolebindings`.
 
 ```yaml
-cat <<EOF | kubectl create -f -
+cat <<EOF | kubectl apply -f -
 {!../scripts/mode-03/vault-auth.yml!}
 EOF
 ```
@@ -50,14 +55,38 @@ vault server \
 	-dev-root-token-id=root
 ```
 
-Now, we will configure the `Kubernetes Secrets Engine` to connect to the local `kind` Cluster with the `vault-auth` `Service Account` and creating a role `kind` that will create a `Service Account`, a `Service Account Token` and `Rolebinding`:
+Authenticate to `Vault` and check with `vault status`:
 
 ```bash
 {!../.envrc!}
+> vault status
+Key             Value
+---             -----
+Seal Type       shamir
+Initialized     true
+Sealed          false
+Total Shares    1
+Threshold       1
+Version         1.18.3
+Build Date      2024-12-16T14:00:53Z
+Storage Type    inmem
+Cluster Name    vault-cluster-4cab3957
+Cluster ID      597257da-8e8d-6147-c379-e93e3a6013c7
+HA Enabled      false
 ```
 
+Now, we will configure the Kubernetes Secrets Engine to connect to the local `kind` Cluster with the `vault-auth` ServiceAccount and create a role `kind` that will create the ServiceAcccount, Token, Role and RoleBinding:
+
+!!! tip
+    The role allows to list all pods in the default namespace
+
+
+!!! important
+    Note the `generated_role_rules`
+
+
 ```bash
-{!../scripts/mode-02/setup-vault.sh!}
+{!../scripts/mode-03/setup-vault.sh!}
 ```
 
 ## Putting it together
@@ -67,7 +96,7 @@ Write `kind`s `kubeconfig` to a file:
 kind get kubeconfig > kind-kubeconfig.yml
 ```
 
-and update it, to use `kubectl-vault-login` for obtaining access:
+and update it, to use `kubectl-vault-login` for authentication:
 
 ```yaml
 # kind-kubeconfig.yml
@@ -82,29 +111,35 @@ users:
         - --role=kind
 ```
 
-You will still need to be authenticated to `Vault`:
-
-```bash
-{!../.envrc!}
-```
-
 ```bash
 # create a pod to see some results
-kubectl run nginx --image=nginx
+> kubectl run nginx --image=nginx
 # use the updated kubeconfig to list pods in the default namespace
-KUBECONFIG=kubeconfig.yml kubectl get pods
-```
-
-And you should see:
-```bash
+> KUBECONFIG=kubeconfig.yml kubectl get pods
 NAME    READY   STATUS    RESTARTS   AGE
 nginx   1/1     Running   0          73s
 ```
 
-The role `role-list-pods` allows listing pods for the `default` namespace, but not for `kube-system`:
+You can also use `curl` to communicate with the Kubernetes API directly:
 
 ```bash
-KUBECONFIG=vault-kubeconfig.yml k get pod -n kube-config
+> curl -sk \
+  -H "Authorization: Bearer $(./kubectl-vault-login -r kind | jq -r .status.token)" \
+  $(kubectl config view --minify -o 'jsonpath={.clusters[].cluster.server}')/api/v1/namespaces/default/pods
+{
+  "kind": "PodList",
+  "apiVersion": "v1",
+  "metadata": {
+    "resourceVersion": "707"
+  },
+  "items": []
+}
+```
+
+The role allows listing pods for the `default` namespace, but not for `kube-system`:
+
+```bash
+> KUBECONFIG=vault-kubeconfig.yml k get pod -n kube-config
 Error from server (Forbidden): pods is forbidden: User "system:serviceaccount:default:v-token-kind-1739680669-u5x0uqreffqt8hf2qdydpksf" cannot list resource "pods" in API group "" in the namespace "kube-system"
 ```
 
