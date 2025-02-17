@@ -876,7 +876,7 @@
 </span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>Cluster<span class="w"> </span>ID<span class="w">      </span>597257da-8e8d-6147-c379-e93e3a6013c7
 </span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>HA<span class="w"> </span>Enabled<span class="w">      </span><span class="nb">false</span>
 </span></code></pre></div>
-<p>Now, we will configure the Kubernetes Secrets Engine to connect to the local <code>kind</code> Cluster with the <code>vault-auth</code> ServiceAccount and create a role <code>kind</code>, which will create a ServiceAccount Tokens for the <code>tmp-sa</code> Service Account:</p>
+<p>Now, we will configure the Kubernetes Secrets Engine to connect to the local <code>kind</code> Cluster with the <code>vault-auth</code> ServiceAccount and create a role <code>kind</code>, which will create a ServiceAccount Tokens for the <code>tmp-sa</code> ServiceAccount:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="ch">#!/usr/bin/env bash</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nb">set</span><span class="w"> </span>-ex
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
