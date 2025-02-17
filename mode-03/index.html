@@ -764,6 +764,11 @@
 <p class="admonition-title">Tip</p>
 <p>This Service Account is going to be used by <code>Vault</code></p>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>**Kubernetes prevents users (including service accounts) from granting RBAC permissions they do not already have themselves.
+Thats why we have to assign <code>bind</code> and <code>escalate</code> as <code>verbs</code> for <code>roles</code> and <code>rolebindings</code>.</p>
+</div>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="l l-Scalar l-Scalar-Plain">cat &lt;&lt;EOF | kubectl apply -f -</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="l l-Scalar l-Scalar-Plain"># SA used by vault to create new service account + token</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
