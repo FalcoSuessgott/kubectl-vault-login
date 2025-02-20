@@ -3,7 +3,9 @@
 Download the artifacts from the [Release](https://github.com/FalcoSuessgott/kubectl-vault-login/releases) section
 
 ## [`krew`](https://krew.sigs.k8s.io)
-tbd.
+```bash
+kubectl krew install vault-login
+```
 
 ## `brew`
 ```
