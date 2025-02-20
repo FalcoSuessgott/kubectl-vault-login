@@ -1,0 +1,30 @@
+apiVersion: krew.googlecontainertools.github.com/v1alpha2
+kind: Plugin
+metadata:
+  name: kubectl-vault-login
+spec:
+  version: {{ .TagName }}
+  homepage: https://github.com/FalcoSuessgott/kubectl-vault-login
+  platforms:
+  - selector:
+      matchLabels:
+        os: darwin
+        arch: amd64
+    {{addURIAndSha "https://github.com/FalcoSuessgott/kubectl-vault-login/releases/download/{{ .TagName }}/kubectl-vault-login_{{ .TagName }}_Darwin_x86_64.tar.gz" .TagName }}
+    bin: kubectl-vault-login
+  - selector:
+      matchLabels:
+        os: darwin
+        arch: arm64
+    {{addURIAndSha "https://github.com/FalcoSuessgott/kubectl-vault-login/releases/download/{{ .TagName }}/kubectl-vault-login_{{ .TagName }}_Darwin_arm64.tar.gz" .TagName }}
+    bin: kubectl-vault-login
+  - selector:
+      matchLabels:
+        os: linux
+        arch: amd64
+    {{addURIAndSha "https://github.com/FalcoSuessgott/kubectl-vault-login/releases/download/{{ .TagName }}/kubectl-vault-login_{{ .TagName }}_Linux_x86_64.tar.gz" .TagName }}
+    bin: kubectl-vault-login
+  shortDescription: Authenticate with Vault Kubernetes Secret Engine
+  description: |
+    By leveraging HashiCorp Vaults Kubernetes Secrets Engine you can create Service Accounts and Service Account tokens
+     with a tight RBAC and a low TTL - making it incredibly useful for CI/CD Operations, such as kubectl apply commands.
