@@ -15,44 +15,37 @@ jobs:
           go-version: '1.23.3'
           cache: false
 
-      - name: Build plugin
-        run: go build -o kubectl-vault-login
+      - name: Install plugin
+        run: |
+          go install
+          kubectl-vault-login -h
 
-      - uses: helm/kind-action@v1
+      - name: setup kind
+        uses: helm/kind-action@v1
         with:
           cluster_name: vault-k8s-secret
           config: scripts/kind-config.yaml
 
-      - name: create a SA and token that is used by vault for creating new service account tokens
-        run: |
-          kubectl apply -f scripts/mode-01
+      - name: setup vault
+        run: make vault
 
-      - name: Configure Vault k8s secret engine
-        run: |
-          make vault
-          K8S_JWT_TOKEN=$(kubectl get secret vault-auth-token -o jsonpath="{.data.token}" | base64 -d)
-          K8S_CA_CERT=$(kubectl get secret vault-auth-token -o jsonpath="{['data']['ca\.crt']}" | base64 -d)
-
-          vault secrets enable kubernetes
-          vault write -f kubernetes/config \
-              kubernetes_host="https://127.0.0.1:6443" \
-              kubernetes_ca_cert="$K8S_CA_CERT" \
-              service_account_jwt="$K8S_JWT_TOKEN"
-
-          vault write kubernetes/roles/kind \
-              allowed_kubernetes_namespaces="default" \
-              service_account_name="tmp-sa" \
-              token_default_ttl="10m"
+      - name: setup mode 01
+        run: make setup-mode-01
         env:
           VAULT_ADDR: http://127.0.0.1:8200
           VAULT_TOKEN: root
 
-      - name: Generate credentials
+      - name: Patch KubeConfig
         run: |
-          curl -sk \
-            -H "Authorization: Bearer $(./kubectl-vault-login -r kind | jq -r .status.token)" \
-            --fail-with-body \
-            $(kubectl config view --minify -o 'jsonpath={.clusters[].cluster.server}')/api/v1/namespaces/default/pods
+          kind get kubeconfig --name vault-k8s-secret > kubeconfig.yml
+          KUBECONFIG=./kubeconfig.yml kubectl config set-credentials vault \
+            --exec-interactive-mode=Never \
+            --exec-api-version=client.authentication.k8s.io/v1 \
+            --exec-command=kubectl \
+            --exec-arg=vault \
+            --exec-arg=login \
+            --exec-arg=--role=kind
+          KUBECONFIG=./kubeconfig.yml kubectl --user=vault get po
         env:
           VAULT_ADDR: http://127.0.0.1:8200
           VAULT_TOKEN: root
