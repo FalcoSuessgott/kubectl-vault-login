@@ -38,6 +38,16 @@ setup-mode-01: ## setup vault in mode 01
 	kubectl apply -f ./scripts/mode-01
 	./scripts/mode-01/setup-vault.sh
 
+.PHONY: setup-mode-02
+setup-mode-02: ## setup vault in mode 02
+	kubectl apply -f ./scripts/mode-02
+	./scripts/mode-02/setup-vault.sh
+
+.PHONY: setup-mode-03
+setup-mode-03: ## setup vault in mode 03
+	kubectl apply -f ./scripts/mode-03
+	./scripts/mode-03/setup-vault.sh
+
 .PHONY: teardown
 teardown:
 	kind delete cluster

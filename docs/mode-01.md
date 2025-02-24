@@ -90,29 +90,44 @@ Now, we will configure the Kubernetes Secrets Engine to connect to the local `ki
 Write `kind`s `kubeconfig` to a file:
 
 ```bash
-kind get kubeconfig > kind-kubeconfig.yml
+kind get kubeconfig > kubeconfig.yml
 ```
 
 and update it, to use `kubectl-vault-login` for authentication:
 
-```yaml
-# kind-kubeconfig.yml
+```bash
+KUBECONFIG=./kubeconfig.yml kubectl config set-credentials vault \
+  --exec-interactive-mode=Never \
+  --exec-api-version=client.authentication.k8s.io/v1 \
+  --exec-command=kubectl \
+  --exec-arg=vault \
+  --exec-arg=login \
+  --exec-arg=--role=kind
+```
+
+```bash
+> cat kubeconfig.yml
 [...]
 users:
-- name: kind-kind
+- name: vault
   user:
     exec:
-      apiVersion: client.authentication.k8s.io/v1beta1
-      command: kubectl-vault-login
+      apiVersion: client.authentication.k8s.io/v1
       args:
-        - --role=kind
+      - vault
+      - login
+      - --role=kind
+      command: kubectl
+      env: null
+      interactiveMode: Never
+      provideClusterInfo: false
 ```
 
 ```bash
 # create a pod to see some results
 > kubectl run nginx --image=nginx
 # use the updated kubeconfig to list pods in the default namespace
-> KUBECONFIG=kubeconfig.yml kubectl get pods
+> KUBECONFIG=./kubeconfig.yml kubectl --user=vault get pod
 NAME    READY   STATUS    RESTARTS   AGE
 nginx   1/1     Running   0          73s
 ```
@@ -136,7 +151,7 @@ You can also use `curl` to communicate with the Kubernetes API directly:
 The role `role-list-pods` allows listing pods for the `default` namespace, but not for `kube-system`:
 
 ```bash
-> KUBECONFIG=vault-kubeconfig.yml k get pod -n kube-config
+> KUBECONFIG=kubeconfig.yml kubectl --user=vault get pod -n kube-config
 Error from server (Forbidden): pods is forbidden: User "system:serviceaccount:default:v-token-kind-1739680669-u5x0uqreffqt8hf2qdydpksf" cannot list resource "pods" in API group "" in the namespace "kube-system"
 ```
 
