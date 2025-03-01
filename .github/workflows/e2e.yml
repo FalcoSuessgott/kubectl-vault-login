@@ -38,14 +38,48 @@ jobs:
       - name: Patch KubeConfig
         run: |
           kind get kubeconfig --name vault-k8s-secret > kubeconfig.yml
-          KUBECONFIG=./kubeconfig.yml kubectl config set-credentials vault \
+          kubectl config set-credentials vault \
             --exec-interactive-mode=Never \
             --exec-api-version=client.authentication.k8s.io/v1 \
             --exec-command=kubectl \
             --exec-arg=vault \
             --exec-arg=login \
             --exec-arg=--role=kind
-          KUBECONFIG=./kubeconfig.yml kubectl --user=vault get po
+        env:
+          KUBECONFIG: ./kubeconfig.yml
+
+      - name: Run tests
+        run: |
+          echo "request a token"
+          kubectl --user=vault get pod
+
+          echo "check if token was cached"
+          checksum=$(cat ~/.kube/cache/vault-login/token | md5sum | awk '{print $1}')
+          echo "Checksum: $checksum"
+          kubectl-vault-login lookup
+
+          echo "use again and check token is the same"
+          kubectl --user=vault get pod
+          checksum2=$(cat ~/.kube/cache/vault-login/token | md5sum | awk '{print $1}')
+          if [ "$checksum" != "$checksum2" ]; then
+            echo "Token was not cached"
+            exit 1
+          fi
+
+          echo "Checksum2: $checksum2"
+          kubectl-vault-login lookup
+
+          echo "force new and check token is different"
+          VAULT_K8S_LOGIN_FORCE_NEW=true kubectl --user=vault get pod
+          checksum3=$(cat ~/.kube/cache/vault-login/token | md5sum | awk '{print $1}')
+          if [ "$checksum" == "$checksum3" ]; then
+            echo "New Token was not cached"
+            exit 1
+          fi
+
+          echo "Checksum3: $checksum3"
+          kubectl-vault-login lookup
         env:
           VAULT_ADDR: http://127.0.0.1:8200
           VAULT_TOKEN: root
+          KUBECONFIG: ./kubeconfig.yml

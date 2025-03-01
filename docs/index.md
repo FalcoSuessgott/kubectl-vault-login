@@ -14,16 +14,29 @@ By leveraging [HashiCorp Vaults Kubernetes Secrets Engine](https://developer.has
 
 Every resource created by `Vault` will automatically revoked once the lease is expired (minimum `600s`).
 
+!!! tip Token Caching
+    `kubectl-vault-login` will cache the token to `~/.kube/cache/vault-login/token` (change with `$KUBECACHEDIR`) and re-use the token until expiry
+
 ![img](./assets/workflow.svg)
 
 ## Getting started
 For every mode, the steps are the same:
 
 1. Install the plugin
-2. Configure a Kubernetes ServiceAccount for `Vault` that is being used to create RBAC resources
+2. Configure a Kubernetes ServiceAccount that is being used by Vault to create RBAC resources
 3. Configure [HashiCorp Vaults Kubernetes Secrets Engine](https://developer.hashicorp.com/vault/docs/secrets/kubernetes)
 4. Create the necessary (Cluster)-Roles and (Cluster)-RoleBindings for which the ServiceAccounts are going to be created
 5. Patch your `$KUBECONFIG` to use `kubectl-vault-login` as an [`ExecCredential`](https://kubernetes.io/docs/reference/config-api/client-authentication.v1beta1/):
+
+```bash
+> kubectl config set-credentials vault \
+  --exec-interactive-mode=Never \
+  --exec-api-version=client.authentication.k8s.io/v1 \
+  --exec-command=kubectl \
+  --exec-arg=vault \
+  --exec-arg=login \
+  --exec-arg=--role=kind # change to your role
+```
 
 ```yaml
 # $KUBECONFIG
@@ -33,8 +46,10 @@ users:
   user:
     exec:
       apiVersion: client.authentication.k8s.io/v1beta1
-      command: kubectl-vault-login
+      command: kubectl
       args:
+        - vault
+        - login
         - --role=kind
 ```
 6. Run any `kubectl` plugin that is allowed in your RBAC-setup

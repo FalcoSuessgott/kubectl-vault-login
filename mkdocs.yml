@@ -42,6 +42,7 @@ nav:
       - mode-01.md
       - mode-02.md
       - mode-03.md
+    - lookup.md
 
 theme:
   name: material
