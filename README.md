@@ -33,8 +33,7 @@ For every mode, the steps are the same:
   --exec-interactive-mode=Never \
   --exec-api-version=client.authentication.k8s.io/v1 \
   --exec-command=kubectl \
-  --exec-arg=vault \
-  --exec-arg=login \
+  --exec-arg=vault-login \
   --exec-arg=--role=kind # change to your role
 ```
 
@@ -48,8 +47,7 @@ users:
       apiVersion: client.authentication.k8s.io/v1beta1
       command: kubectl
       args:
-        - vault
-        - login
+        - vault-login
         - --role=kind
 ```
 

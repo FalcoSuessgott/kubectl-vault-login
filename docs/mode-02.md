@@ -103,8 +103,7 @@ KUBECONFIG=./kubeconfig.yml kubectl config set-credentials vault \
   --exec-interactive-mode=Never \
   --exec-api-version=client.authentication.k8s.io/v1 \
   --exec-command=kubectl \
-  --exec-arg=vault \
-  --exec-arg=login \
+  --exec-arg=vault-login \
   --exec-arg=--role=kind
 ```
 
@@ -117,8 +116,7 @@ users:
     exec:
       apiVersion: client.authentication.k8s.io/v1
       args:
-      - vault
-      - login
+      - vault-login
       - --role=kind
       command: kubectl
       env: null
