@@ -13,10 +13,8 @@
       
       
       
-        <link rel="prev" href="../installation/">
+        <link rel="prev" href="../mode-03/">
       
-      
-        <link rel="next" href="../mode-01/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -24,7 +22,7 @@
     
     
       
-        <title>Usage - kubectl-vault-login</title>
+        <title>Token Lookup - kubectl-vault-login</title>
       
     
     
@@ -78,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#usage" class="md-skip">
+        <a href="#token-lookup" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Usage
+              Token Lookup
             
           </span>
         </div>
@@ -379,19 +377,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../usage/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -401,7 +390,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -539,10 +527,31 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../lookup/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Token Lookup
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -552,6 +561,53 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#list-token-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      List Token Details
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#json-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSON Format
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#force-re-creation-of-a-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Force re-creation of a token
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -584,6 +640,41 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#list-token-details" class="md-nav__link">
+    <span class="md-ellipsis">
+      List Token Details
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#json-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      JSON Format
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#force-re-creation-of-a-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Force re-creation of a token
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -598,7 +689,7 @@
 
 
   
-    <a href="https://github.com/FalcoSuessgott/kubectl-vault-login/edit/master/docs/usage.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/FalcoSuessgott/kubectl-vault-login/edit/master/docs/lookup.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75z"/></svg>
     </a>
@@ -606,25 +697,55 @@
   
 
 
-<h1 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h1>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>All of Vaults <a href="https://developer.hashicorp.com/vault/docs/commands">Environment Variables</a> are supported.</p>
-</div>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>&gt;<span class="w"> </span>kubectl-vault-login<span class="w"> </span>-h
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>A<span class="w"> </span>kubectl<span class="w"> </span>plugin<span class="w"> </span>to<span class="w"> </span>to<span class="w"> </span>obtain<span class="w"> </span>access<span class="w"> </span>to<span class="w"> </span>a<span class="w"> </span>kubernetes<span class="w"> </span>cluster<span class="w"> </span>via<span class="w"> </span>HashiCorp<span class="w"> </span>Vaults<span class="w"> </span>Kubernetes<span class="w"> </span>secrets<span class="w"> </span>engine
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>Usage:
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span>kubectl-vault-login<span class="w"> </span><span class="o">[</span>flags<span class="o">]</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>Flags:
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span>-a,<span class="w"> </span>--audiences<span class="w"> </span>string<span class="w">   </span>A<span class="w"> </span>comma<span class="w"> </span>separated<span class="w"> </span>string<span class="w"> </span>containing<span class="w"> </span>the<span class="w"> </span>intended<span class="w"> </span>audiences<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>generated<span class="w"> </span>Kubernetes<span class="w"> </span>service<span class="w"> </span>account<span class="w"> </span><span class="o">(</span>VAULT_K8S_LOGIN_AUDIENCES<span class="o">)</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span>-c,<span class="w"> </span>--crb<span class="w">                </span>If<span class="w"> </span>true,<span class="w"> </span>generate<span class="w"> </span>a<span class="w"> </span>ClusterRoleBinding<span class="w"> </span>to<span class="w"> </span>grant<span class="w"> </span>permissions<span class="w"> </span>across<span class="w"> </span>the<span class="w"> </span>whole<span class="w"> </span>cluster<span class="w"> </span>instead<span class="w"> </span>of<span class="w"> </span>within<span class="w"> </span>a<span class="w"> </span>namespace<span class="w"> </span><span class="o">(</span>VAULT_K8S_LOGIN_CRB<span class="o">)</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span>-h,<span class="w"> </span>--help<span class="w">               </span><span class="nb">help</span><span class="w"> </span><span class="k">for</span><span class="w"> </span>kubectl-vault-login
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span>-m,<span class="w"> </span>--mount<span class="w"> </span>string<span class="w">       </span>The<span class="w"> </span>Kubernetes<span class="w"> </span>secrets<span class="w"> </span>mount<span class="w"> </span>path<span class="w"> </span><span class="o">(</span>VAULT_K8S_LOGIN_MOUNT<span class="o">)</span><span class="w"> </span><span class="o">(</span>default<span class="w"> </span><span class="s2">&quot;kubernetes&quot;</span><span class="o">)</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">  </span>-n,<span class="w"> </span>--ns<span class="w"> </span>string<span class="w">          </span>The<span class="w"> </span>name<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>Kubernetes<span class="w"> </span>namespace<span class="w"> </span><span class="k">in</span><span class="w"> </span>which<span class="w"> </span>to<span class="w"> </span>generate<span class="w"> </span>the<span class="w"> </span>credentials<span class="w"> </span><span class="o">(</span>VAULT_K8S_LOGIN_NAMESPACE<span class="o">)</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">  </span>-r,<span class="w"> </span>--role<span class="w"> </span>string<span class="w">        </span>The<span class="w"> </span>name<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>role<span class="w"> </span>to<span class="w"> </span>generate<span class="w"> </span>credentials<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="o">(</span>VAULT_K8S_LOGIN_ROLE<span class="o">)</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">  </span>-t,<span class="w"> </span>--ttl<span class="w"> </span>string<span class="w">         </span>The<span class="w"> </span>ttl<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>generated<span class="w"> </span>Kubernetes<span class="w"> </span>service<span class="w"> </span>account<span class="w"> </span><span class="o">(</span>VAULT_K8S_LOGIN_TTL<span class="o">)</span><span class="w"> </span><span class="o">(</span>default<span class="w"> </span><span class="s2">&quot;1h&quot;</span><span class="o">)</span>
+<h1 id="token-lookup">Token Lookup<a class="headerlink" href="#token-lookup" title="Permanent link">&para;</a></h1>
+<p><code>kubectl-vault-login</code> will cache the token to <code>~/.kube/cache/vault-login/token</code> (change with <code>$KUBECACHEDIR</code>) and re-use the token until expiry.</p>
+<p>You can check if <strong>a token has been cachend and is still valid</strong> by:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>&gt;<span class="w"> </span>kubectl<span class="w"> </span>vault-login<span class="w"> </span>lookup<span class="w"> </span>--is-valid<span class="p">;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$?</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="o">[</span>ERROR<span class="o">]</span><span class="w"> </span>token<span class="w"> </span>is<span class="w"> </span>expired.
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nb">exit</span><span class="w"> </span>status<span class="w"> </span><span class="m">1</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="m">1</span>
+</span></code></pre></div>
+<h2 id="list-token-details">List Token Details<a class="headerlink" href="#list-token-details" title="Permanent link">&para;</a></h2>
+<p>Once a token has been cached, you can list the details of it using the <code>lookup</code> subcommand:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>&gt;<span class="w"> </span>kubect<span class="w"> </span>vault-login<span class="w"> </span>lookup
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">      </span>DESCRIPTION<span class="w">      </span><span class="p">|</span><span class="w">     </span>CLAIM<span class="w">     </span><span class="p">|</span><span class="w">                     </span>VALUE
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>-----------------------<span class="p">|</span>---------------<span class="p">|</span>-------------------------------------------------
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span>Audience<span class="w">             </span><span class="p">|</span><span class="w"> </span>aud<span class="w">           </span><span class="p">|</span><span class="w"> </span><span class="o">[</span>https://kubernetes.default.svc.cluster.local<span class="o">]</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span>Expiration<span class="w"> </span><span class="nb">time</span><span class="w">      </span><span class="p">|</span><span class="w"> </span>exp<span class="w">           </span><span class="p">|</span><span class="w"> </span><span class="m">2025</span>-03-01<span class="w"> </span><span class="m">14</span>:58:01<span class="w"> </span>+1100<span class="w"> </span>AEDT
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span>Issued<span class="w"> </span>at<span class="w">            </span><span class="p">|</span><span class="w"> </span>iat<span class="w">           </span><span class="p">|</span><span class="w"> </span><span class="m">2025</span>-03-01<span class="w"> </span><span class="m">13</span>:58:01<span class="w"> </span>+1100<span class="w"> </span>AEDT
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span>Issuer<span class="w">               </span><span class="p">|</span><span class="w"> </span>iss<span class="w">           </span><span class="p">|</span><span class="w"> </span>https://kubernetes.default.svc.cluster.local
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span>JWT<span class="w"> </span>ID<span class="w">               </span><span class="p">|</span><span class="w"> </span>jti<span class="w">           </span><span class="p">|</span><span class="w"> </span>91c01363-8220-4215-865f-06947343bd03
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">  </span>Kubernetes<span class="w"> </span>namespace<span class="w"> </span><span class="p">|</span><span class="w"> </span>namespace<span class="w">     </span><span class="p">|</span><span class="w"> </span>default
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">  </span>Not<span class="w"> </span>before<span class="w">           </span><span class="p">|</span><span class="w"> </span>nbf<span class="w">           </span><span class="p">|</span><span class="w"> </span><span class="m">2025</span>-03-01<span class="w"> </span><span class="m">13</span>:58:01<span class="w"> </span>+1100<span class="w"> </span>AEDT
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">  </span>Service<span class="w"> </span>Account<span class="w"> </span>Name<span class="w"> </span><span class="p">|</span><span class="w"> </span>servieaccount<span class="w"> </span><span class="p">|</span><span class="w"> </span>tmp-sa
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">  </span>Subject<span class="w">              </span><span class="p">|</span><span class="w"> </span>sub<span class="w">           </span><span class="p">|</span><span class="w"> </span>system:serviceaccount:default:tmp-sa
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">  </span>Service<span class="w"> </span>Account<span class="w"> </span>UID<span class="w">  </span><span class="p">|</span><span class="w"> </span>uid<span class="w">           </span><span class="p">|</span><span class="w"> </span>5acb748f-654c-4442-974b-fd0d8d649c7d
+</span></code></pre></div>
+<h2 id="json-format">JSON Format<a class="headerlink" href="#json-format" title="Permanent link">&para;</a></h2>
+<p>Or its JSON representation for scripting purposes:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&gt;<span class="w"> </span>kubectl<span class="w"> </span>vault-login<span class="w"> </span>--lookup<span class="w"> </span>-f<span class="o">=</span>json<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>.
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="o">{</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="s2">&quot;aud&quot;</span>:<span class="w"> </span><span class="o">[</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="s2">&quot;https://kubernetes.default.svc.cluster.local&quot;</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="o">]</span>,
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="s2">&quot;exp&quot;</span>:<span class="w"> </span><span class="m">1740801481</span>,
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span><span class="s2">&quot;iat&quot;</span>:<span class="w"> </span><span class="m">1740797881</span>,
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">  </span><span class="s2">&quot;iss&quot;</span>:<span class="w"> </span><span class="s2">&quot;https://kubernetes.default.svc.cluster.local&quot;</span>,
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">  </span><span class="s2">&quot;jti&quot;</span>:<span class="w"> </span><span class="s2">&quot;91c01363-8220-4215-865f-06947343bd03&quot;</span>,
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">  </span><span class="s2">&quot;kubernetes.io&quot;</span>:<span class="w"> </span><span class="o">{</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="s2">&quot;namespace&quot;</span>:<span class="w"> </span><span class="s2">&quot;default&quot;</span>,
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span><span class="s2">&quot;serviceaccount&quot;</span>:<span class="w"> </span><span class="o">{</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">      </span><span class="s2">&quot;name&quot;</span>:<span class="w"> </span><span class="s2">&quot;tmp-sa&quot;</span>,
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">      </span><span class="s2">&quot;uid&quot;</span>:<span class="w"> </span><span class="s2">&quot;5acb748f-654c-4442-974b-fd0d8d649c7d&quot;</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">    </span><span class="o">}</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">  </span><span class="o">}</span>,
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">  </span><span class="s2">&quot;nbf&quot;</span>:<span class="w"> </span><span class="m">1740797881</span>,
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">  </span><span class="s2">&quot;sub&quot;</span>:<span class="w"> </span><span class="s2">&quot;system:serviceaccount:default:tmp-sa&quot;</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="o">}</span>
+</span></code></pre></div>
+<h2 id="force-re-creation-of-a-token">Force re-creation of a token<a class="headerlink" href="#force-re-creation-of-a-token" title="Permanent link">&para;</a></h2>
+<p>Sometimes one does need a new authenticated token. In that case you can use <code>VAULT_K8S_LOGIN_FORCE_NEW</code>:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&gt;<span class="w"> </span><span class="nv">VAULT_K8S_LOGIN_FORCE_NEW</span><span class="o">=</span><span class="nb">true</span><span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pod
 </span></code></pre></div>
 
 
@@ -646,7 +767,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">February 10, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">March 1, 2025</span>
   </span>
 
     
@@ -697,7 +818,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../installation/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Installation">
+          <a href="../mode-03/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Create a ServiceAccount, a Token, Role and RoleBinding">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -707,27 +828,11 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                Installation
+                Create a ServiceAccount, a Token, Role and RoleBinding
               </div>
             </div>
           </a>
         
-        
-          
-          <a href="../mode-01/" class="md-footer__link md-footer__link--next" aria-label="Next: Create a ServiceAccount Token for a ServiceAccount with Role &amp;amp; RoleBinding">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              <div class="md-ellipsis">
-                Create a ServiceAccount Token for a ServiceAccount with Role &amp; RoleBinding
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
-            </div>
-          </a>
         
       </nav>
     
