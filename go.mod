@@ -6,6 +6,7 @@ require (
 	github.com/caarlos0/env/v11 v11.3.1
 	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/hashicorp/vault/api v1.15.0
+	github.com/olekukonko/tablewriter v0.0.5
 	github.com/spf13/cobra v1.9.1
 	gotest.tools/gotestsum v1.12.0
 	k8s.io/apimachinery v0.32.1
@@ -38,6 +39,7 @@ require (
 	github.com/kr/pretty v0.3.1 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
+	github.com/mattn/go-runewidth v0.0.9 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
