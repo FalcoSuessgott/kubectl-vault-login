@@ -1,0 +1,20 @@
+Authentication Workflow: {
+  shape: sequence_diagram
+  k: kubectl
+  v: Vault
+  k8s: Kubernetes
+
+  kubectl command: {
+    Create Credentials: {
+      k -> k: reuse Token if cached and not expired
+      k -> v: Request Credentials
+      k -> v: Authenticate using CLI Args/Env Vars
+      v -> k8s: Create Resources (SA, Token, Roles & RBs/CRBs)
+      v -> k: return ExecCredential
+    }
+  }
+
+  Credential Revocation: {
+    v -> k8s: Revoke and Remove created Resources if expired
+  }
+}
