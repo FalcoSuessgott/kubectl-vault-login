@@ -4,7 +4,7 @@ go 1.23.3
 
 require (
 	github.com/caarlos0/env/v11 v11.3.1
-	github.com/golang-jwt/jwt/v5 v5.2.2
+	github.com/golang-jwt/jwt/v5 v5.2.3
 	github.com/hashicorp/vault/api v1.20.0
 	github.com/olekukonko/tablewriter v0.0.5
 	github.com/spf13/cobra v1.9.1
