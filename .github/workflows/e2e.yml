@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: eLco/setup-vault@v1
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v6
         with:
           go-version: '1.23.3'
           cache: false
