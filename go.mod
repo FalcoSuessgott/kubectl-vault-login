@@ -7,7 +7,7 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.3.0
 	github.com/hashicorp/vault/api v1.20.0
 	github.com/olekukonko/tablewriter v0.0.5
-	github.com/spf13/cobra v1.9.1
+	github.com/spf13/cobra v1.10.1
 	gotest.tools/gotestsum v1.12.3
 	k8s.io/apimachinery v0.32.3
 	k8s.io/client-go v0.32.3
@@ -46,7 +46,7 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/natefinch/atomic v1.0.1 // indirect
 	github.com/ryanuber/go-glob v1.0.0 // indirect
-	github.com/spf13/pflag v1.0.6 // indirect
+	github.com/spf13/pflag v1.0.9 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
 	golang.org/x/crypto v0.39.0 // indirect
 	golang.org/x/mod v0.25.0 // indirect
