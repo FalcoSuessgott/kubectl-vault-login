@@ -7,7 +7,7 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.3.0
 	github.com/hashicorp/vault/api v1.22.0
 	github.com/olekukonko/tablewriter v0.0.5
-	github.com/spf13/cobra v1.10.1
+	github.com/spf13/cobra v1.10.2
 	gotest.tools/gotestsum v1.12.3
 	k8s.io/apimachinery v0.32.3
 	k8s.io/client-go v0.32.3
